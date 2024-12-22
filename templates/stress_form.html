@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stress Questionnaire</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 20px;
+            color: #555;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .radio-group {
+            margin-bottom: 15px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 20px;
+                padding: 15px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Stress Questionnaire</h2>
+        <form action="/submit_stress" method="POST">
+            <!-- Question 1 -->
+            <label for="q1">1. I feel stressed due to work/school:</label>
+            <div class="radio-group">
+                <input type="radio" id="q1_a" name="q1" value="Did not apply to me at all" required> Did not apply to me at all<br>
+                <input type="radio" id="q1_b" name="q1" value="Applied to me to some degree"> Applied to me to some degree<br>
+                <input type="radio" id="q1_c" name="q1" value="Applied to me a considerable degree"> Applied to me a considerable degree<br>
+                <input type="radio" id="q1_d" name="q1" value="Applied to me very much"> Applied to me very much
+            </div>
+
+            <!-- Question 2 -->
+            <label for="q2">2. I often feel overwhelmed with responsibilities:</label>
+            <div class="radio-group">
+                <input type="radio" id="q2_a" name="q2" value="Did not apply to me at all" required> Did not apply to me at all<br>
+                <input type="radio" id="q2_b" name="q2" value="Applied to me to some degree"> Applied to me to some degree<br>
+                <input type="radio" id="q2_c" name="q2" value="Applied to me a considerable degree"> Applied to me a considerable degree<br>
+                <input type="radio" id="q2_d" name="q2" value="Applied to me very much"> Applied to me very much
+            </div>
+
+            <!-- Question 3 -->
+            <label for="q3">3. I find it hard to manage my time effectively:</label>
+            <div class="radio-group">
+                <input type="radio" id="q3_a" name="q3" value="Did not apply to me at all" required> Did not apply to me at all<br>
+                <input type="radio" id="q3_b" name="q3" value="Applied to me to some degree"> Applied to me to some degree<br>
+                <input type="radio" id="q3_c" name="q3" value="Applied to me a considerable degree"> Applied to me a considerable degree<br>
+                <input type="radio" id="q3_d" name="q3" value="Applied to me very much"> Applied to me very much
+            </div>
+
+            <!-- Question 4 -->
+            <label for="q4">4. I feel anxious before major events or deadlines:</label>
+            <div class="radio-group">
+                <input type="radio" id="q4_a" name="q4" value="Did not apply to me at all" required> Did not apply to me at all<br>
+                <input type="radio" id="q4_b" name="q4" value="Applied to me to some degree"> Applied to me to some degree<br>
+                <input type="radio" id="q4_c" name="q4" value="Applied to me a considerable degree"> Applied to me a considerable degree<br>
+                <input type="radio" id="q4_d" name="q4" value="Applied to me very much"> Applied to me very much
+            </div>
+
+            <!-- Question 5 -->
+            <label for="q5">5. I experience physical symptoms like headaches when stressed:</label>
+            <div class="radio-group">
+                <input type="radio" id="q5_a" name="q5" value="Did not apply to me at all" required> Did not apply to me at all<br>
+                <input type="radio" id="q5_b" name="q5" value="Applied to me to some degree"> Applied to me to some degree<br>
+                <input type="radio" id="q5_c" name="q5" value="Applied to me a considerable degree"> Applied to me a considerable degree<br>
+                <input type="radio" id="q5_d" name="q5" value="Applied to me very much"> Applied to me very much
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

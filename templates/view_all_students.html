@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Students</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        table th, table td {
+            text-align: left;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        table th {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #e1f5e1;
+        }
+
+        /* Button Styles */
+        .back-button {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            table th, table td {
+                font-size: 12px;
+                padding: 8px 10px;
+            }
+
+            .back-button {
+                font-size: 14px;
+                padding: 10px 15px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>All Students</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Student Registration</th>
+                    <th>Student Name</th>
+                    <th>Student ID</th>
+                    <th>Class</th>
+                    <th>Section</th>
+                    <th>Age</th>
+                    <th>Weight (kg)</th>
+                    <th>Contact Number</th>
+                    <th>FOMO</th>
+                    <th>ADHD</th>
+                    <th>Feedback</th>
+                    <th>Stress</th>
+                    <th>Depression</th>
+                    <th>Anxiety</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    <tr>
+                        <td>{{ student['student_registration'] }}</td>
+                        <td>{{ student['student_name'] }}</td>
+                        <td>{{ student['student_id'] }}</td>
+                        <td>{{ student['class'] }}</td>
+                        <td>{{ student['section'] }}</td>
+                        <td>{{ student['age'] }}</td>
+                        <td>{{ student['weight_kg'] }}</td>
+                        <td>{{ student['contact_number'] }}</td>
+                        <td>{{ student['FOMO'] }}</td>
+                        <td>{{ student['ADHD'] }}</td>
+                        <td>{{ student['feedback'] }}</td>
+                        <td>{{ student['stress'] }}</td>
+                        <td>{{ student['depression'] }}</td>
+                        <td>{{ student['anxiety'] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="/admin_dashboard" class="back-button">Back to Dashboard</a>
+    </div>
+</body>
+</html>

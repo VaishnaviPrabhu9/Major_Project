@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 30px auto;
+            background: #ffffff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .view-all-btn {
+            margin-top: 10px;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .view-all-btn button {
+            width: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        table th, table td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #f4f4f4;
+            color: #333;
+            font-size: 14px;
+        }
+
+        table td {
+            font-size: 13px;
+            color: #555;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .update-feedback {
+            margin-top: 15px;
+            display: inline-block;
+            text-align: right;
+        }
+
+        .alert {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            color: white;
+            background-color: #007bff;
+            font-size: 14px;
+        }
+
+        .alert-danger {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Admin Dashboard</h2>
+        
+        <!-- Form to view a specific student -->
+        <form method="POST">
+            <label>Enter Student ID:</label>
+            <input type="text" name="student_id" placeholder="Enter Student ID" required>
+            <button type="submit">View Student</button>
+        </form>
+
+        <!-- Form to view all students -->
+        <div class="view-all-btn">
+            <a href="/view_all_students"><button>View All Students</button></a>
+        </div>
+
+        {% if student %}
+            <h3 style="margin-top: 30px;">Student Information</h3>
+            <table>
+    <tr><th>Student Registration</th><td>{{ student['student_registration'] }}</td></tr>
+    <tr><th>Student Name</th><td>{{ student['student_name'] }}</td></tr>
+    <tr><th>Student ID</th><td>{{ student['student_id'] }}</td></tr>
+    <tr><th>Class</th><td>{{ student['class'] }}</td></tr>
+    <tr><th>Section</th><td>{{ student['section'] }}</td></tr>
+    <tr><th>Age</th><td>{{ student['age'] }}</td></tr>
+    <tr><th>Weight (kg)</th><td>{{ student['weight_kg'] }}</td></tr>
+    <tr><th>Contact Number</th><td>{{ student['contact_number'] }}</td></tr>
+    <tr><th>FOMO</th><td>{{ student['FOMO'] }}</td></tr>
+    <tr><th>ADHD</th><td>{{ student['ADHD'] }}</td></tr>
+    <tr><th>Feedback</th><td>{{ student['feedback'] }}</td></tr>
+    <tr><th>Stress</th><td>{{ student['stress'] }}</td></tr>
+    <tr><th>Depression</th><td>{{ student['depression'] }}</td></tr>
+	<tr><th>Anxiety</th><td>{{ student['anxiety'] }}</td></tr>
+</table>
+
+
+            <div class="update-feedback">
+                <a href="/update_feedback?student_id={{ student['student_id'] }}">Update Feedback</a>
+            </div>
+        {% else %}
+            {% if flash %}
+                <div class="alert alert-danger">{{ flash }}</div>
+            {% endif %}
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login - ManoShakthi</title>
+    <style>
+        /* General Style */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            /* Full height of the viewport */
+            background-color: #f4f4f4;
+            /* Light background color */
+        }
+        /* Login Container */
+        
+        .login-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 300px;
+            /* Fixed width for the form */
+            text-align: center;
+        }
+        /* Form Group */
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+            /* Align labels to the left */
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        /* Login Button */
+        
+        .login-button {
+            background-color: #007bff;
+            /* Blue button */
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .login-button:hover {
+            background-color: #0056b3;
+            /* Darker blue on hover */
+        }
+        /* Footer */
+        
+        .footer {
+            margin-top: 20px;
+        }
+        
+        .footer a {
+            color: #007bff;
+            /* Blue link */
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+            /* Underline on hover */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <h1>Student Login</h1>
+        <form action="#" method="POST">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="login-button">Login</button>
+        </form>
+        <div class="footer">
+            <p>Don't have an account? <a href="student_register.html">Register here</a></p>
+        </div>
+    </div>
+</body>
+
+</html>

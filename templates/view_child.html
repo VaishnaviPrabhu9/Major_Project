@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Child Information</title>
+</head>
+<body>
+    <h2>Child Information</h2>
+    <table border="1">
+        <tr>
+            <th>Student Name</th>
+            <th>Student ID</th>
+            <th>Class</th>
+            <th>Section</th>
+            <th>Age</th>
+            <th>Weight (kg)</th>
+        </tr>
+        <tr>
+            <td>{{ student['student_name'] }}</td>
+            <td>{{ student['student_id'] }}</td>
+            <td>{{ student['class'] }}</td>
+            <td>{{ student['section'] }}</td>
+            <td>{{ student['age'] }}</td>
+            <td>{{ student['weight_kg'] }}</td>
+        </tr>
+    </table>
+</body>
+</html>
