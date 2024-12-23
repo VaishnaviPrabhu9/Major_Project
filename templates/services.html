@@ -1,164 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>agriculture page</title>
-    <!--<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/style.css')}}">-->
- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
 
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
 
-    <style>
+    .box {
+      padding: 30px;
+      background-color: #f9f9f9;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
 
-    .row.content {height: 550px}
+    .title {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #2c3e50; /* Primary color */
+      margin-bottom: 20px;
+    }
 
-    .sidenav {
-      background-color: #f1f1f1;
-      height: 100%;
-      padding: 15px;}
+    .intro-text {
+      color: #666;
+      margin-bottom: 30px;
+      text-align: justify;
+      line-height: 1.6;
+    }
 
-      a.more-link{ background-color: #000000;
-         color: white;
-         padding: 14px 25px;
-         text-align: center;
-         text-decoration: none;
-         display: inline-block;
-        }
+    .services-list {
+      text-align: left;
+      margin: 0 auto;
+      max-width: 800px;
+    }
 
-.center {
-  margin: auto;
-  width: 60%;
-  border: 3px solid #73AD21;
-  padding: 10px;
-}
+    .service-item {
+      padding: 15px 0;
+      border-bottom: 1px solid #ddd;
+    }
 
-body {font-family: Arial, Helvetica, sans-serif;
-background-image:url(https://fwi-wp-assets-live.s3-eu-west-1.amazonaws.com/sites/1/2018/05/1410518-a-sprayer-spraying-in-winter-wheat-c-tim-scrivener-2752015-25255.jpg);
-background-repeat : no-repeat;
-background-size : cover;
-}
-* {box-sizing: border-box}
+    .service-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #2c3e50; /* Primary color */
+      margin-bottom: 10px;
+    }
 
-input[type=text], input[type=email], input[type=password] {
-  width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  display: inline-block;
-  border: none;
-  background: #f1f1f1;
-}
+    .service-description {
+      color: #666;
+      text-align: justify;
+      line-height: 1.6;
+    }
 
-input[type=submit] {
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  opacity: 0.9;
-}
+    .divider {
+      margin: 40px 0;
+      border: 0;
+      border-top: 2px solid #ddd;
+    }
 
- signin{
-  background-color: #f1f1f1;
-  text-align: center;
-}
+    .specialized-programs-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #2c3e50; /* Primary color */
+      margin-bottom: 20px;
+    }
 
-
-.topnav {
-  overflow: hidden;
-  background-color: #333;
-}
-
-.topnav a {
-  float: left;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-}
-
-.topnav a:hover {
-  background-color: #ddd;
-  color: black;
-}
-
-.topnav a.active {
-  background-color: #4CAF50;
-  color: white;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-/* Create four equal columns that floats next to each other */
-.column {
-  float:left;
-  width: 24%;
-  padding: 10px;
-  margin-left:3px;
-  margin-right:3px;
-  transition:1s;
-  height: 300px; /* Should be removed. Only for demonstration */
-}
-.column:hover {
-transform:scale(1.2);
-background: #ff800a;
-box-shadow:2px 2px 2px #000;
-z-index:2;
- }
-
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-p{
-color:red;
-}
-
-</style>
-
+    .specialized-programs-text {
+      color: #666;
+      text-align: justify;
+      line-height: 1.6;
+      margin: 0 auto;
+      max-width: 800px;
+    }
+  </style>
 </head>
-    <body>
 
-    <div class="topnav">
+<body>
+  <div class="container">
+    <div class="box">
+      <!-- Title Section -->
+      <div class="title">
+        Our Services
+      </div>
+      <p class="intro-text">
+        We provide a range of services aimed at supporting students' academic, emotional, and career growth. Our holistic approach is tailored to the needs of students, parents, and counselors, ensuring that each individual receives the guidance they need.
+      </p>
 
-        <a href="/">Home</a>
-         <a href="/about">About</a>
-         <a href="/services">Services</a>
-        <a href="/predictinfo" class="active">Predict</a>
-         <a href="/logout" style="float: right;">Logout</a>
+      <!-- Services List -->
+      <div class="services-list">
+        <div class="service-item">
+          <div class="service-title">Academic Counseling</div>
+          <p class="service-description">
+            Personalized guidance on course selection, study techniques, and improving academic performance, designed to help students succeed in their educational journey.
+          </p>
+        </div>
+        <div class="service-item">
+          <div class="service-title">Mental Health Support</div>
+          <p class="service-description">
+            Resources and support for managing stress, anxiety, and other mental health challenges. Our goal is to foster resilience and emotional well-being.
+          </p>
+        </div>
+        <div class="service-item">
+          <div class="service-title">Career Guidance</div>
+          <p class="service-description">
+            Career planning support, including resume building, interview preparation, and insights into potential career paths to align with students’ skills and aspirations.
+          </p>
+        </div>
+      </div>
 
+      <!-- Divider -->
+      <div class="divider"></div>
+
+      <!-- Specialized Programs Section -->
+      <div class="specialized-programs-title">
+        Specialized Programs
+      </div>
+      <p class="specialized-programs-text">
+        Our specialized programs include evidence-based assessments like the ASRS (Adult ADHD Self-Report Scale), FOMO (Fear of Missing Out) questionnaire, and DASS (Depression Anxiety Stress Scales). These tools are crafted to support students in identifying and managing their mental health needs. Through these services, we aim to empower students to achieve personal and academic well-being.
+      </p>
     </div>
-<div><br><br><br><br></div>
-    <div class="row">
-  <div class="column" style="background-color:#aaa;">
-    <center><br><br><br><br><a href="/coconut"><h2>Coconut Diseases & Symptoms</h2>
-    <p>Click to know more</p>
-	</a></center>
   </div>
-   <div class="column" style="background-color:#aaa;">
-  <center><br><br><br><br><a href="/cocoa"><h2>Cocoa Diseases & Symptoms</h2>
-    <p>Click to know more</p>
-	</a></center>
-  </div>
-   <div class="column" style="background-color:#aaa;">
-  <center><br><br><br><br><a href="/arecanut"><h2> Arecanut Diseases & Symptoms </h2>
-    <p>Click to know more</p>
-	</a></center>
-  </div>
-   <div class="column" style="background-color:#aaa;">
-  <center><br><br><br><br><a href="/paddy"><h2>Paddy Diseases & Symptoms </h2>
-    <p>Click to know more</p>
-	</a></center>
-  </div>
-</div>
-<div><br></div>
-
 </body>
+
 </html>

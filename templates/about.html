@@ -1,153 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>About</title>
-</head>
-<style>
-
-.row.content {height: 550px}
-
-    .sidenav {
-      background-color: #f1f1f1;
-      height: 100%;
-      padding: 15px;}
-
-      a.more-link{ background-color: #000000;
-         color: white;
-         padding: 14px 25px;
-         text-align: center;
-         text-decoration: none;
-         display: inline-block;
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About ManoShakthi</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background: linear-gradient(to right, #f4f4f9, #e8f4f8);
+            color: #333;
         }
 
-.center {
-  margin: auto;
-  width: 60%;
-  border: 3px solid #73AD21;
-  padding: 10px;
-}
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
 
-body {font-family: Arial, Helvetica, sans-serif;
-background-image:url(https://wallpaperaccess.com/full/1866271.jpg);
-background-repeat : no-repeat;
-background-size : cover;
-}
-* {box-sizing: border-box}
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
 
-input[type=text], input[type=email], input[type=password] {
-  width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  display: inline-block;
-  border: none;
-  background: #f1f1f1;
-}
+        /* Navbar Styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
 
-input[type=submit] {
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  opacity: 0.9;
-}
+        .logo h2 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
 
- signin{
-  background-color: #f1f1f1;
-  text-align: center;
-}
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
 
+        .nav-menu a {
+            color: white;
+            font-weight: bold;
+            transition: color 0.3s ease-in-out;
+            font-size: 18px;
+        }
 
-.topnav {
-  overflow: hidden;
-  background-color: #333;
-}
+        .nav-menu a:hover {
+            color: #1abc9c;
+        }
 
-.topnav a {
-  float: left;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-}
+        /* Container Styles */
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 40px;
+        }
 
-.topnav a:hover {
-  background-color: #ddd;
-  color: black;
-}
+        .content-box {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-.topnav a.active {
-  background-color: #4CAF50;
-  color: white;
-}
+        .content-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
 
-* {
-  box-sizing: border-box;
-}
+        .content-box h1, .content-box h2, .content-box h3 {
+            color: #2c3e50;
+            margin-top: 0;
+            font-size: 30px;
+            font-weight: bold;
+        }
 
-/* Create four equal columns that floats next to each other */
-.column {
-  float:left;
-  width: 24%;
-  padding: 10px;
-  margin-left:3px;
-  margin-right:3px;
-  transition:1s;
-  height: 300px; /* Should be removed. Only for demonstration */
-}
-.column:hover {
-transform:scale(1.2);
-background: #ff800a;
-box-shadow:2px 2px 2px #000;
-z-index:2;
- }
+        .content-box p {
+            line-height: 1.8;
+            color: #555;
+            font-size: 16px;
+        }
 
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-p{
-color:red;
-}
-.par {
-  display: block;
-  margin-top: 1em;
-  margin-bottom: 1em;
-  margin-left: 30px;
-}
-</style>
+        ul li {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        /* Footer Styles */
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+        }
+
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+
 <body>
-<div class="topnav">
+    <!-- Navbar -->
+    <header>
+        <div class="navbar">
+            <div class="logo">
+                <h2>ManoShakthi</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About Us</a></li>
+                <li><a href="/services">Services</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
 
-        <a href="/">Home</a>
-         <a href="/about">About</a>
-         <a href="/services">Services</a>
-        <a href="/predictinfo" class="active">Predict</a>
-         <a href="/logout" style="float: right;">Logout</a>
+    <!-- Main Section -->
+    <main>
+        <div class="container">
+            <div class="content-box">
+                <h1>Welcome to ManoShakthi</h1>
+                <p>Your trusted partner in promoting student mental wellness. ManoShakthi is a comprehensive, integrated platform specifically designed to evaluate and monitor the mental health of students using well-established and scientifically validated scales: DASS (Depression, Anxiety, Stress Scale), FoMO (Fear of Missing Out), and ADHD (Attention Deficit Hyperactivity Disorder).</p>
+            </div>
 
-    </div>
-<div><br><br><br><br></div>
-<div>
-    <center><br><br><br><br><h2>About Us</h2>
+            <div class="content-box">
+                <h2>Our Mission</h2>
+                <p>To provide an accessible, scalable, and supportive tool for preliminary mental wellness diagnostics, empowering educational institutions, school counselors, and psychologists to identify and address potential mental health issues early. By streamlining the assessment process, ManoShakthi enables quick, efficient, and accurate evaluations, helping to ensure that no student’s mental health needs go unnoticed.</p>
+            </div>
 
-<p>Agriculture is a mainstay for the people living. In India,
-Agriculture is backbone of our country. Above 55% of
-people is dependent on the field of agriculture
-recent research news. In this agriculture field, it gives above
-60% employed people as farmers from total population. In worldwide scenario, the farm
-output of India was scored second rank. So that compared to
-the other domains, in the field of agriculture produce more
-data day to day. With the knowledge of proper diagnosis and
-analysis using various techniques for this
-domain will increase the productivity and profitability from
-the intelligence techniques. It is much more help to the
-farmers and as well as the government. This sytem helps the farmer to predict the suitable  crops to be grown in suitable area.</p>
-</center></div>
+            <div class="content-box">
+                <h2>Key Features</h2>
+                <ul>
+                    <li><strong>DASS Scale Assessment:</strong> Measures levels of depression, anxiety, and stress, providing an early indication of students who may need additional support.</li>
+                    <li><strong>FoMO Scale Evaluation:</strong> Identifies signs of fear of missing out, a growing concern in our digital age that can affect students' self-esteem and well-being.</li>
+                    <li><strong>ADHD Scale Analysis:</strong> Screens for attention deficit hyperactivity disorder, aiding in the early detection of students who may benefit from additional resources and interventions.</li>
+                </ul>
+            </div>
+
+            <div class="content-box">
+                <h2>Our Vision</h2>
+                <p>We believe that every student deserves the opportunity to thrive in a supportive environment that values mental health. Through ManoShakthi, we aim to foster awareness, reduce stigma, and contribute to a future where students feel empowered, understood, and ready to succeed.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 ManoShakthi. All rights reserved.</p>
+    </footer>
 </body>
- </html>
+
+</html>

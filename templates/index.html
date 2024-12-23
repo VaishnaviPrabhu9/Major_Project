@@ -5,7 +5,137 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ManoShakthi</title>
-    <link rel="stylesheet" href="static/css/index.css">
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            height: 100%;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #36516b;
+            color: white;
+            padding: 20px 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center; /* Align logo and title vertically */
+        }
+
+        .logo img {
+            height: 40px; /* Adjust the size of the logo */
+            margin-right: 10px; /* Space between the logo and title */
+        }
+
+        .logo h2 {
+            margin: 0;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-menu li {
+            position: relative;
+        }
+
+        .nav-menu a {
+            color: white;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: #e1e7e9;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 10px 0;
+            z-index: 10;
+        }
+
+        .dropdown-content a {
+            color: #2c3e50;
+            padding: 10px 20px;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #36516b;
+            color: white;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Welcome Section Styles */
+        .welcome-section {
+            background: rgb(240, 238, 238); /* Set the background to white */
+            text-align: center;
+            padding: 80px 20px;
+            height: calc(100vh - 160px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #36516b;
+        }
+
+        .welcome-section h1 {
+            font-size: 3rem;
+            margin: 0 0 10px;
+        }
+
+        .welcome-section p {
+            font-size: 1.2rem;
+            margin: 0;
+        }
+
+        /* Footer Styles */
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        footer p {
+            margin: 0;
+        }
+    </style>
 </head>
 
 <body>
@@ -13,12 +143,13 @@
     <header>
         <div class="navbar">
             <div class="logo">
-                <h2>ManoShakthi</h2>
+                <img src="Logo.png" > <!-- Logo Image -->
+                
             </div>
             <ul class="nav-menu">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Services</a></li>
+                <li><a href="/home">Home</a></li>
+                <li><a href="/about">About Us</a></li>
+                <li><a href="/services">Services</a></li>
                 <li><a href="#s">Contact</a></li>
                 <li class="dropdown">
                     <a href="#">Login</a>
@@ -28,11 +159,10 @@
                         <a href="/parent_login">Parent</a>
                     </div>
                 </li>
-				<li class="dropdown">
+                <li class="dropdown">
                     <a href="#">Registration</a>
                     <div class="dropdown-content">
                         <a href="/studentreg">Student</a>
-                        
                         <a href="/register_parent">Parent</a>
                     </div>
                 </li>
@@ -45,6 +175,7 @@
         <div class="welcome-section">
             <h1>Welcome to ManoShakthi</h1>
             <p>Your one-stop solution for student psychological health assessments.</p>
+            
         </div>
     </main>
 

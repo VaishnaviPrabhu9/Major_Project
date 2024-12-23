@@ -113,6 +113,11 @@ def stureg():
 def aboutpage():
     return render_template('about.html')
 
+
+@app.route('/services')
+def servicespage():
+    return render_template('services.html')
+
 # Initialize MySQL
 mysql = MySQL(app)
 
@@ -180,7 +185,7 @@ def register_parent():
         cursor.close()
 
         flash('Parent registration successful!', 'success')
-        return redirect('/login_parent')
+        return redirect('/parent_login')
 
     return render_template('parent_register.html')
 
