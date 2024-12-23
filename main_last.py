@@ -71,7 +71,7 @@ depression_target_encoder_filename = r'dass_new\depression\target_encoder.pkl'
 def home():
    return render_template('index.html')
 
-@app.route('/gohome')
+@app.route('/home')
 def homepage():
     return render_template('index.html')
 
