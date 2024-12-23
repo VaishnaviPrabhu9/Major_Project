@@ -8,6 +8,11 @@ import pandas as pd
 from werkzeug.security import generate_password_hash
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from flask import Flask, render_template, request, redirect, url_for
+
 app = Flask(__name__)
 
 app.config['MYSQL_HOST'] = 'localhost'
@@ -113,6 +118,9 @@ def stureg():
 def aboutpage():
     return render_template('about.html')
 
+@app.route('/contact')
+def contactpage():
+    return render_template('contact.html')
 
 @app.route('/services')
 def servicespage():

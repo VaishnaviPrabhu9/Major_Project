@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ManoShakthi</title>
+    <title>{% block title %}ManoShakthi{% endblock %}</title>
     <style>
         /* General Styles */
         body {
@@ -90,30 +90,6 @@
         .dropdown:hover .dropdown-content {
             display: block;
         }
-
-        /* Welcome Section Styles */
-        .welcome-section {
-            background: #edf0f3;
-            color:  #2c3e50;
-            text-align: center;
-            padding: 80px 20px;
-            height: calc(100vh - 240px);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .welcome-section h1 {
-            font-size: 3rem;
-            margin: 0 0 10px;
-        }
-
-        .welcome-section p {
-            font-size: 1.2rem;
-            margin: 0;
-        }
-
         /* Footer Styles */
         footer {
             background: #2c3e50;
@@ -139,7 +115,7 @@
                 <li><a href="/home">Home</a></li>
                 <li><a href="/about">About Us</a></li>
                 <li><a href="/services">Services</a></li>
-                <li><a href="/contact">Contact</a></li>
+                <li><a href="#s">Contact</a></li>
                 <li class="dropdown">
                     <a href="#">Login</a>
                     <div class="dropdown-content">
@@ -159,13 +135,9 @@
         </div>
     </header>
 
-    <!-- Main Section -->
-    <main>
-        <div class="welcome-section">
-            <h1>Welcome to ManoShakthi</h1>
-            <p>Your one-stop solution for student psychological health assessments.</p>
-        </div>
-    </main>
+    <!-- Main Content -->
+    {% block content %}
+    {% endblock %}
 
     <!-- Footer -->
     <footer>
