@@ -103,7 +103,7 @@
                     if (data.error) {
                         displayMessage(data.error, "bot-message");
                     } else {
-                        const responseMessage = `**Topic**: ${data.topic}<br>**Question**: ${data.question}<br>**Answer**: ${data.answer}`;
+                        const responseMessage = `${data.answer}`;
                         displayMessage(responseMessage, "bot-message");
                     }
                 })
