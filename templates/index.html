@@ -39,11 +39,16 @@
             color: white;
             padding: 20px 20px;
         }
-
-        .logo h2 {
-            margin: 0;
+        .logo img {
+            height: 50px; /* Adjust the height as needed */
+            width: 180px;
+            padding-left: 10px; /* Maintain aspect ratio */
         }
 
+        .logo h2 {
+            margin: 8px;
+
+        }
         .nav-menu {
             display: flex;
             align-items: center;
@@ -132,8 +137,8 @@
     <!-- Navbar -->
     <header>
         <div class="navbar">
-            <div class="logo">
-                <h2>ManoShakthi</h2>
+           <div class="logo">
+                <img src="{{ url_for('static', filename='Logo.png') }}" alt="Logo">
             </div>
             <ul class="nav-menu">
                 <li><a href="/home">Home</a></li>
@@ -165,6 +170,7 @@
             <h1>Welcome to ManoShakthi</h1>
             <p>Your one-stop solution for student psychological health assessments.</p>
         </div>
+    
     </main>
 
     <!-- Footer -->

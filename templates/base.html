@@ -39,9 +39,14 @@
             color: white;
             padding: 20px 20px;
         }
+        .logo img {
+            height: 50px; /* Adjust the height as needed */
+            width: 180px; 
+            margin-left: 10px;/* Maintain aspect ratio */
+        }
 
         .logo h2 {
-            margin: 0;
+            margin: 10px;
         }
 
         .nav-menu {
@@ -108,8 +113,8 @@
     <!-- Navbar -->
     <header>
         <div class="navbar">
-            <div class="logo">
-                <h2>ManoShakthi</h2>
+             <div class="logo">
+                <img src="{{ url_for('static', filename='Logo.png') }}" alt="Logo">
             </div>
             <ul class="nav-menu">
                 <li><a href="/home">Home</a></li>
