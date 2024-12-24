@@ -15,10 +15,11 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background: #f4f8fb;
+            background: white;
             height: 100vh;
             display: flex;
             flex-direction: column;
+           
         }
 
         html {
@@ -44,10 +45,6 @@
             background: #2c3e50;
             color: white;
             padding: 20px 20px;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
         }
 
         .logo h2 {
@@ -85,21 +82,26 @@
             z-index: 10;
         }
 
-        .registerhere a {
-            color: #2c3e50;
-            font-weight: bold;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
+      .registerhere a {
+    color: #2c3e50; /* Set the link color */
+    font-weight: bold; /* Make the text bold */
+    text-decoration: none; /* Remove the underline */
+    transition: color 0.3s;
+}
+.registerhere {
+    margin-top: 20px; /* Adds space between the login button and registerhere */
+}
 
-        .registerhere {
-            margin-top: 20px;
-        }
+.registerhere a {
+    color: #2c3e50; /* Set the link color */
+    font-weight: bold; /* Make the text bold */
+    text-decoration: none; /* Remove the underline */
+    transition: color 0.3s;
+}
 
-        .registerhere a:hover {
-            color: #405f76;
-        }
-
+.registerhere a:hover {
+    color: #405f76; /* Change color when hovered */
+}
         .dropdown-content a {
             color: #2c3e50;
             padding: 10px 20px;
@@ -119,14 +121,15 @@
         /* Login Form Styles */
         .login-container {
             background: white;
+            padding: 30px 30px; /* Adjusted padding for better fit */
             border-radius: 20px; /* Increased border-radius for more rounded edges */
             text-align: center;
             width: 100%;
             max-width: 350px; /* Decreased width */
+            height: auto; /* Automatically adjusts based on content */
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            margin-top: 50px; /* Added margin-top to give some space from the top */
-            margin-left: auto; /* Horizontally center the form */
-            margin-right: auto; /* Horizontally center the form */
+            margin-top: 70px;
+            margin-left: 500px;
         }
 
         .login-container h2 {
@@ -151,10 +154,10 @@
 
         .form-group input {
             width: 100%;
-            padding: 13px;
+            padding: 13px; /* Increased padding for a more spacious input field */
             font-size: 1rem;
             border: #18212b;
-            border-radius: 12px;
+            border-radius: 12px; /* Slightly more rounded inputs */
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
 
@@ -168,11 +171,12 @@
             background: #2c3e50;
             color: white;
             border: none;
-            padding: 13px;
+            padding: 10px 8px; /* Adjusted button padding */
             font-size: 1rem;
-            border-radius: 13px;
+            border-radius: 13px; /* More rounded button */
             cursor: pointer;
             width: 90%;
+            padding: 13px;
             transition: background-color 0.3s;
         }
 
@@ -186,8 +190,7 @@
             color: white;
             text-align: center;
             padding: 20px 20px;
-            margin-top: auto;
-            width: 100%;
+            margin-top: 50px; /* Gives some space after the form */
         }
 
         footer p {
@@ -201,7 +204,7 @@
     <header>
         <div class="navbar">
             <div class="logo">
-                <h2>ManoShakti</h2>
+                <h2>ManoShakthi</h2>
             </div>
             <ul class="nav-menu">
                 <li><a href="/home">Home</a></li>
@@ -233,7 +236,7 @@
         <form method="POST">
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email"  required>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
@@ -243,12 +246,13 @@
         </form>
         <div class="registerhere">
             <p>Don't have an account? <a href="/register_parent">Register here</a></p>
+
         </div>
     </div>
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2024 ManoShakti. All rights reserved.</p>
+        <p>&copy; 2024 ManoShakthi. All rights reserved.</p>
     </footer>
 </body>
 
