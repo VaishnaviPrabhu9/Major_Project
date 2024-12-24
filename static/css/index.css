@@ -1,5 +1,4 @@
 /* General Style */
-
 * {
     margin: 0;
     padding: 0;
@@ -13,18 +12,13 @@ body {
     min-height: 100vh;
 }
 
-
 /* Navbar Styles */
-
 header {
-    background-color: #007bff;
-    /* Blue header */
-    width: 100%;
-    /* Full width of screen */
+    background-color: #007bff; /* Blue header */
+    width: 100%; /* Full width of screen */
     color: white;
     padding: 15px 0;
-    position: fixed;
-    /* Fix the header to the top */
+    position: fixed; /* Fix the header to the top */
     top: 0;
     z-index: 1000;
 }
@@ -34,19 +28,17 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 0 5%;
-    width: 100%;
-    /* Full width navbar */
+    width: 100%; /* Full width navbar */
 }
 
-.logo h2 {
-    font-size: 28px;
+.logo img {
+    height: 50px; /* Set the logo image size, adjust accordingly */
 }
 
 .nav-menu {
     display: flex;
     gap: 20px;
-    list-style: none;
-    /* Remove bullets */
+    list-style: none; /* Remove bullets */
 }
 
 .nav-menu li {
@@ -63,8 +55,7 @@ header {
 }
 
 .nav-menu a:hover {
-    background-color: #0056b3;
-    /* Darker blue on hover */
+    background-color: #0056b3; /* Darker blue on hover */
     border-radius: 5px;
 }
 
@@ -92,21 +83,17 @@ header {
     background-color: #0056b3;
 }
 
-
 /* Main Section */
-
 main {
     flex: 1;
-    padding-top: 100px;
-    /* To avoid overlap with the fixed header */
+    padding-top: 100px; /* To avoid overlap with the fixed header */
 }
 
 .welcome-section {
     text-align: center;
     padding: 100px 20px;
     background-color: #f4f4f4;
-    height: calc(100vh - 200px);
-    /* Full height minus header and footer */
+    height: calc(100vh - 200px); /* Full height minus header and footer */
 }
 
 .welcome-section h1 {
@@ -119,20 +106,15 @@ main {
     margin-top: 20px;
 }
 
-
 /* Footer Styles */
-
 footer {
-    background-color: #333;
-    /* Grey footer */
+    background-color: #333; /* Grey footer */
     color: white;
     text-align: center;
     padding: 20px 0;
     margin-top: auto;
-    height: 1.5in;
-    /* Fixed footer height */
-    width: 100%;
-    /* Full width footer */
+    height: 1.5in; /* Fixed footer height */
+    width: 100%; /* Full width footer */
 }
 
 footer p {
