@@ -163,9 +163,6 @@ def register():
         flash('Student registered successfully!', 'success')
         return render_template('login.html')
 
-
-
-
 @app.route('/register_parent', methods=['GET', 'POST'])
 def register_parent():
     if request.method == 'POST':
