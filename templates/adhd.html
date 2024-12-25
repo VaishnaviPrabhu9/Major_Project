@@ -146,13 +146,17 @@ button[type="submit"]:hover {
     background: #505962;
 }
 
-/* Footer styling */
-footer {
-    text-align: center;
-    padding: 10px;
-    font-size: 14px;
-    background: #f4f4f9;
-}
+        /* Footer Styles */
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        footer p {
+            margin: 0;
+        }
 
         
     </style>
@@ -172,7 +176,7 @@ footer {
         </header>
 
         <form action="/submit_adhd" method="POST">
-            <h3>ADHD Questions (Rate 1-5)</h3>
+           
             <div class="form-group">
                 <label>1. How often do you have trouble wrapping up the final details of a project, once the challenging parts have been done?</label>
                 <label><input type="radio" name="q1" value="0" required> Never</label>
@@ -337,10 +341,10 @@ footer {
 
             <button type="submit">Submit</button>
         </form>
-        
-        <footer>
-            <p>&copy; 2024 ADHD Assessment Tool | Designed with care.</p>
-        </footer>
     </div>
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 ManoShakthi. All rights reserved.</p>
+    </footer>
 </body>
 </html>
