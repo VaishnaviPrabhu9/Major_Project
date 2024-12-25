@@ -8,19 +8,20 @@
         /* General Styles */
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f4f4f9;
+            background-color: #f0f6ff;
             margin: 0;
             padding: 0;
         }
 
         .container {
             width: 90%;
-            max-width: 1200px;
+            max-width: 1444px;  /* Reduce container width on desktop */
             margin: 50px auto;
-            background: #ffffff;
+            background: #f4f3f3;
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            overflow-x: auto; /* Ensure horizontal scrolling for the table on small screens */
         }
 
         h2 {
@@ -40,29 +41,42 @@
 
         table th, table td {
             text-align: left;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            font-size: 14px;
+            padding: 10px 15px;  /* Smaller padding */
+            border: 1px solid #e1e1e1;
+            font-size: 14px;  /* Slightly smaller text size */
         }
 
         table th {
-            background-color: #4CAF50;
+            background-color: #0e7aa8; /* Blue for the header */
             color: white;
             font-weight: bold;
         }
 
         table tr:nth-child(even) {
-            background-color: #f9f9f9;
+            background-color: #f5faff;  /* Light blue for even rows */
+        }
+
+        table tr:nth-child(odd) {
+            background-color: #ffffff;  /* White for odd rows */
         }
 
         table tr:hover {
-            background-color: #e1f5e1;
+            background-color: #f0f9ff;  /* Light hover effect */
+        }
+
+        /* Add a nice hover effect for table cells */
+        table td {
+            transition: background-color 0.3s ease;
+        }
+
+        table td:hover {
+            background-color: #f0f9ff;
         }
 
         /* Button Styles */
         .back-button {
             display: inline-block;
-            background-color: #007bff;
+            background-color: #0d7ac4; /* Green button */
             color: white;
             text-decoration: none;
             padding: 12px 20px;
@@ -75,7 +89,7 @@
         }
 
         .back-button:hover {
-            background-color: #0056b3;
+            background-color: #5aafdd; /* Darker green on hover */
         }
 
         /* Responsive Design */
@@ -92,6 +106,43 @@
 
             h2 {
                 font-size: 24px;
+            }
+
+            /* Ensure the table scrolls horizontally */
+            .container {
+                padding: 15px;
+            }
+
+            table {
+                width: 100%;
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            table th, table td {
+                min-width: 120px; /* Ensures that the table has some minimum width */
+            }
+        }
+
+        /* For even smaller screens (phones) */
+        @media (max-width: 480px) {
+            table th, table td {
+                font-size: 10px;
+                padding: 8px 10px;
+            }
+
+            .back-button {
+                font-size: 12px;
+                padding: 8px 12px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            table th, table td {
+                min-width: 100px; /* For very small screens */
             }
         }
 

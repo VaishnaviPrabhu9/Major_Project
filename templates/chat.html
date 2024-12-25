@@ -21,6 +21,11 @@
             text-align: center;
             padding: 20px;
             font-size: 24px;
+        } 
+        .logo img{
+            margin-left: 10px;
+            width: 180px;
+            height: 37px;
         }
         #footer {
             background: #2c3e50;
@@ -178,7 +183,9 @@ h1 {
 </head>
 <body>
     <div class="header">
-        <img src="logo.png" alt="Logo" id="chatbot-logo">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='Logo.png') }}" alt="Logo">
+        </div>
         
         <button onclick="history.back()" id="back-button">Back</button>
     </div>

@@ -162,7 +162,9 @@
 
     <!-- Full-width Header -->
     <div class="header">
-        <img src="logo.png" alt="Logo">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='Logo.png') }}" alt="Logo">
+        </div>
         <button onclick="history.back()">Back</button>
     </div>
 
