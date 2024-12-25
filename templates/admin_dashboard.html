@@ -154,23 +154,52 @@
                 width: 100%;
             }
         }
+
+        
+/* Styling for the logout container */
+.logout {
+    background: #505962;/* Red background */
+    color: white; /* White text */
+    padding: 8px 15px; /* Some padding for space */
+    border-radius: 12px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-right: 40px; /* Smooth transitions */
+}
+
+/* Text styling inside logout */
+.logout-text {
+    font-weight: bold;
+    font-size: 14px; /* Small text size */
+    text-align: center;
+}
+
+/* Hover effect for logout container */
+.logout:hover {
+    background: #73808d; /* Darker red on hover */
+    transform: translateY(-2px); /* Slight upward movement on hover */
+}
     </style>
 </head>
 
 <body>
     <!-- Full-width Header -->
     <div class="header">
-        <div class="logo">
-            <img src="{{ url_for('static', filename='Logo.png') }}" alt="Logo">
+        <img src="{{ url_for('static', filename='Logo.png') }}" alt="Logo">
+        <div class="logout" onclick="location.href='/home'">
+            <div>logout</div>
         </div>
-        <button onclick="window.location.href='/login'">Log out</button>
+
+
     </div>
+
 
     <div class="dashboard">
       
         <div class="container">
             <div class="box" onclick="location.href='/view_all_students'">View All Students</div>
-            <div class="box" onclick="location.href='/view_individual_student'">View Individual Student</div>
+            <div class="box" onclick="location.href='/view_student'">View Individual Student</div>
             <div class="box" onclick="location.href='/view_high_severity'">View High Severity</div>
             <div class="box" onclick="location.href='/visualisation'">Visualisation</div>
         </div>

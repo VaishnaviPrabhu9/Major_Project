@@ -46,23 +46,7 @@
             height: 40px;
         }
 
-        .header button {
-            background: #505962;
-            color: #eaedf0;
-            border: none;
-            padding: 10px 15px;
-            font-size: 14px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
-            z-index: 1001;
-            position: relative;
-            left: 0cm;
-        }
-
-        .header button:hover {
-            background: #505962;
-        }
+        
 
         /* Dashboard Container */
         .dashboard {
@@ -139,13 +123,42 @@
             color: white;
         }
 
+/* Styling for the logout container */
+.logout {
+    background: #505962;/* Red background */
+    color: white; /* White text */
+    padding: 8px 15px; /* Some padding for space */
+    border-radius: 12px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+}
+
+/* Text styling inside logout */
+.logout-text {
+    font-weight: bold;
+    font-size: 14px; /* Small text size */
+    text-align: center;
+}
+
+/* Hover effect for logout container */
+.logout:hover {
+    background: #73808d; /* Darker red on hover */
+    transform: translateY(-2px); /* Slight upward movement on hover */
+}
+
+
     </style>
 </head>
 
 <body>
     <div class="header">
         <img src="{{ url_for('static', filename='Logo.png') }}" alt="Logo">
-        <button onclick="history.back()">Log out</button>
+        <div class="logout" onclick="location.href='/home'">
+            <div>logout</div>
+        </div>
+
+
     </div>
 
     <!-- Dashboard Section -->

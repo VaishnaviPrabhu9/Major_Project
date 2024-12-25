@@ -98,6 +98,78 @@ def chat():
 def servicepage2():
     return render_template('parent_login.html')
 
+
+@app.route('/view_high_severity')
+def view_high_severity():
+    return render_template('view_high_severity.html')
+
+
+@app.route('/high_adhd')
+def high_adhd():
+    if 'admin_logged_in' not in session:
+        flash("Please log in as admin to access this page.", "danger")
+        return redirect('/admin_login')
+
+    cursor = mysql.connection.cursor(DictCursor)
+    cursor.execute("SELECT  student_name, student_id, class, section, ADHD FROM student where ADHD='High Impulsivity/Restlessness'")
+    students = cursor.fetchall()
+    cursor.close()
+
+    return render_template('high_adhd.html', students=students)
+
+@app.route('/high_depression')
+def high_depression():
+    if 'admin_logged_in' not in session:
+        flash("Please log in as admin to access this page.", "danger")
+        return redirect('/admin_login')
+
+    cursor = mysql.connection.cursor(DictCursor)
+    cursor.execute("SELECT  student_name, student_id, class, section, depression FROM student where depression='depressed'")
+    students = cursor.fetchall()
+    cursor.close()
+
+    return render_template('high_depression.html', students=students)
+
+
+@app.route('/high_anxiety')
+def high_anxiety():
+    if 'admin_logged_in' not in session:
+        flash("Please log in as admin to access this page.", "danger")
+        return redirect('/admin_login')
+
+    cursor = mysql.connection.cursor(DictCursor)
+    cursor.execute("SELECT  student_name, student_id, class, section, anxiety FROM student where anxiety=' Anxiety'")
+    students = cursor.fetchall()
+    cursor.close()
+
+    return render_template('high_anxiety.html', students=students)
+
+@app.route('/high_stress')
+def high_stress():
+    if 'admin_logged_in' not in session:
+        flash("Please log in as admin to access this page.", "danger")
+        return redirect('/admin_login')
+
+    cursor = mysql.connection.cursor(DictCursor)
+    cursor.execute("SELECT  student_name, student_id, class, section, stress FROM student where stress='Stressed'")
+    students = cursor.fetchall()
+    cursor.close()
+
+    return render_template('high_stress.html', students=students)
+
+@app.route('/high_fomo')
+def high_fomo():
+    if 'admin_logged_in' not in session:
+        flash("Please log in as admin to access this page.", "danger")
+        return redirect('/admin_login')
+
+    cursor = mysql.connection.cursor(DictCursor)
+    cursor.execute("SELECT  student_name, student_id, class, section, FOMO FROM student where FOMO='High FOMO'")
+    students = cursor.fetchall()
+    cursor.close()
+
+    return render_template('high_FOMO.html', students=students)
+
 @app.route('/parentreg')
 def parreg():
     return render_template('parent_register.html')
@@ -142,7 +214,7 @@ def register():
         # Check if passwords match
         if password != confirm_password:
             flash('Passwords do not match', 'error')
-            return redirect('/')
+            return redirect('/register')
 
         # Database operation
         cur = mysql.connection.cursor()  # Corrected usage
@@ -181,11 +253,11 @@ def register_parent():
             flash('Student ID not found. Register the student first.', 'danger')
             return redirect('/register_parent')
 
-        # Insert parent data
         cursor.execute("""
-            INSERT INTO parent (parent_name, student_id, contact_number, email, password)
-            VALUES (%s, %s, %s, %s, %s)
-        """, (parent_name, student_id, contact_number, email, password))
+    INSERT INTO parent (parent_name, student_id, contact_number, email, password, confirm_password)
+    VALUES (%s, %s, %s, %s, %s, %s)
+""", (parent_name, student_id, contact_number, email, password, confirm_password))
+
         mysql.connection.commit()
         cursor.close()
 
@@ -241,23 +313,24 @@ def view_all_students():
         return redirect('/admin_login')
 
     cursor = mysql.connection.cursor(DictCursor)
-    cursor.execute("SELECT student_registration, student_name, student_id, class, section, age, weight_kg, contact_number, FOMO, ADHD, feedback, stress, depression, anxiety FROM student")
+    cursor.execute("SELECT  student_name, student_id, class, section, age, weight_kg, contact_number, FOMO, ADHD, feedback, stress, depression, anxiety FROM student")
     students = cursor.fetchall()
     cursor.close()
 
     return render_template('view_all_students.html', students=students)
 
-# Update student feedback
+
 @app.route('/update_feedback', methods=['GET', 'POST'])
 def update_feedback():
     if 'admin_logged_in' not in session:
         flash("Please log in as admin to access this page.", "danger")
         return redirect('/admin_login')
-    
+
     if request.method == 'POST':
         student_id = request.form['student_id']
         feedback = request.form['feedback']
-        
+
+        # Update the feedback in the database
         cursor = mysql.connection.cursor()
         cursor.execute("UPDATE student SET feedback = %s WHERE student_id = %s", (feedback, student_id))
         mysql.connection.commit()
@@ -266,31 +339,46 @@ def update_feedback():
         flash('Feedback updated successfully!', 'success')
         return redirect('/admin_dashboard')
 
-    return render_template('update_feedback.html')
+    # Assuming you want to display student details when the route is accessed by GET
+    student_id = request.args.get('student_id')
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM student WHERE student_id = %s", (student_id,))
+    student = cursor.fetchone()
+    cursor.close()
 
-# View student information
+    return render_template('view_student.html', student=student)
+
 @app.route('/view_student', methods=['GET', 'POST'])
 def view_student():
+    if 'admin_logged_in' not in session:
+        flash("Please log in as admin to access this page.", "danger")
+        return redirect('/admin_login')
+
+    student = None
+
     if request.method == 'POST':
-        student_id = request.form['student_id']  # Get the student ID from the form
+        student_id = request.form.get('student_id', '').strip()
+
+        if not student_id:
+            flash("Student ID is required!", "danger")
+            return redirect('/view_student')  # Redirect to the same page
 
         cursor = mysql.connection.cursor(DictCursor)
         cursor.execute("""
-            SELECT student_registration, student_name, student_id, class, section, age, weight_kg, contact_number, password, confirm_password, created_at, FOMO, DASS, ADHD, feedback
+            SELECT  student_name, student_id, class, section, age, weight_kg, contact_number, 
+                   FOMO, ADHD, feedback, stress, depression, anxiety
             FROM student
             WHERE student_id = %s
         """, (student_id,))
-        student = cursor.fetchone()  # Fetch the student details
-
+        student = cursor.fetchone()
         cursor.close()
 
-        if student:
-            return render_template('student_details.html', student=student)
-        else:
-            flash("Student not found!", "danger")
-            return redirect('/admin_dashboard')  # Redirect to admin dashboard if student not found
+        if not student:
+            flash("No student found with the provided ID.", "danger")
+            return redirect('/view_student')  # Redirect to the same page
 
-    return render_template('view_student.html')
+    return render_template('view_student.html', student=student)
+
 
 @app.route('/parent_login', methods=['GET', 'POST'])
 def parent_login():
@@ -306,7 +394,6 @@ def parent_login():
 
         if parent:
             session['parent_logged_in'] = True
-            session['parent_id'] = parent['parent_registration']
             session['student_id'] = parent['student_id']
             flash("Login successful!", "success")
             return redirect('/parent_dashboard')
@@ -328,7 +415,7 @@ def parent_dashboard():
     # Fetch student details based on student_id
     cursor = mysql.connection.cursor(DictCursor)
     cursor.execute("""
-        SELECT student_registration, student_name, student_id, class, section, age, weight_kg, contact_number, created_at, FOMO, ADHD, feedback, stress, depression, anxiety
+        SELECT student_name, student_id, class, section, age, weight_kg, contact_number, created_at, FOMO, ADHD, feedback, stress, depression, anxiety
         FROM student
         WHERE student_id = %s
     """, (student_id,))
@@ -509,7 +596,7 @@ def submit_stress():
 
             try:
                 # Debugging: Print the query and parameters
-                print(f"Executing query: UPDATE student SET Stress = '{y_pred[0]}' WHERE student_id = '{student_id}'")
+                print(f"Executing query: UPDATE student SET Stress = '{result}' WHERE student_id = '{student_id}'")
 
                 # Update the student record with the stress value
                 query = """
@@ -631,16 +718,16 @@ def submit_anxiety():
             alert_message = f"Anxiety value '{y_pred[0]}' updated successfully."
 
             # Render the home page with the alert message
-            return render_template('home.html', alert_message=alert_message)
+            return render_template('dass_dashboard.html', alert_message=alert_message)
         else:
             # If no student session is found
-            return render_template('home.html', alert_message="No active session found. Please log in.", status_code=403)
+            return render_template('dass_dashboard.html', alert_message="No active session found. Please log in.", status_code=403)
 
     except Exception as e:
         # Log the error message
         print(f"Error in submit_anxiety: {str(e)}")
         alert_message = f"An error occurred: {e}"
-        return render_template('home.html', alert_message=alert_message)
+        return render_template('dass_dashboard.html', alert_message=alert_message)
 
 
 
@@ -733,10 +820,10 @@ def submit_depression():
                 file.write(result + "\n")
 
             # Render the home page with the alert message
-            return render_template('home.html', alert_message=alert_message)
+            return render_template('dass_dashboard.html', alert_message=alert_message)
         else:
             # If no student session is found
-            return render_template('home.html', alert_message="No active session found. Please log in.", status_code=403)
+            return render_template('dass_dashboard.html', alert_message="No active session found. Please log in.", status_code=403)
 
     except Exception as e:
         # Log the error message
@@ -749,17 +836,12 @@ def submit_depression():
 @app.route('/currency')
 def adhd():
     return render_template('adhd.html')
-
-# Route to handle form submission for ADHD questionnaire
 @app.route('/submit_adhd', methods=['POST'])  # This route will handle the form submission
 def submit_adhd():
     # Load the ADHD model and label encoder
     model = joblib.load(adhd_model_filename)
     label_encoder = joblib.load(adhd_encoder_filename)
 
-    # Retrieve form data (ADHD questionnaire answers)
-   
-    
     # Retrieve answers to ADHD questions (q1 to q18)
     answers = []
     for i in range(1, 19):  # From q1 to q18
@@ -789,14 +871,13 @@ def submit_adhd():
     y_pred = label_encoder.inverse_transform(y_pred_encoded)
 
     # Final result: Student information, answers, and predicted category
-    result = f"  Predicted ADHD Category: {y_pred[0]}"
-
     result = f"{y_pred[0]}"
 
+    # Store the result in the database for the logged-in student
     if 'student_id' in session:
         student_id = session['student_id']
 
-        # Update the FOMO column in the database for the logged-in student
+        # Update the ADHD column in the database for the logged-in student
         cursor = mysql.connection.cursor()
 
         try:
@@ -824,23 +905,339 @@ def submit_adhd():
         finally:
             cursor.close()
 
-        return response_message
+        # Store the final result in a text file (append mode)
+        with open("adhd_results.txt", "a") as file:
+            file.write(result + "\n")
+
+        # Redirect to home page with the result
+        return render_template('home.html', result=result)
     else:
         # If no student session is found
         return "No active session found. Please log in.", 403
 
-    # Store the final result in a text file (append mode)
-    with open("adhd_results.txt", "a") as file:
-        file.write(result + "\n")
-
-    # Display the predicted result
-    return render_template('result.html', result=result)
 
 @app.route('/logout')
 def logout():
     # Remove the user from the session to log out
     session.pop('user', None)
     return redirect(url_for('home'))
+
+@app.route('/visualisation')
+def visualisation():
+    return render_template('visualisation.html')
+
+from flask import render_template, request, redirect, url_for, flash
+import matplotlib.pyplot as plt
+import seaborn as sns
+import io
+import base64
+
+# Route for FOMO visualization
+@app.route('/fomo_visualisation', methods=['GET'])
+def fomo_visualisation():
+    # Ensure you get the data from the database
+    cursor = mysql.connection.cursor(DictCursor)
+    cursor.execute("SELECT FOMO FROM student")  # Fetch FOMO category data from the student table
+    students = cursor.fetchall()
+    cursor.close()
+
+    # Count occurrences of each FOMO category
+    low_fomo_count = 0
+  
+    high_fomo_count = 0
+
+    for student in students:
+        fomo_category = student['FOMO']  # Assuming FOMO is stored as a string like 'Low FOMO', 'Moderate FOMO', 'High FOMO'
+        
+        if fomo_category == 'Low FoMO':
+            low_fomo_count += 1
+  
+        elif fomo_category == 'High FoMO':
+            high_fomo_count += 1
+
+    # Pie Chart
+    pie_labels = ['Low FoMO', 'High FoMO']
+    pie_sizes = [low_fomo_count, high_fomo_count]
+    pie_colors = ['green', 'red']
+
+    fig_pie, ax_pie = plt.subplots()
+    ax_pie.pie(pie_sizes, labels=pie_labels, colors=pie_colors, autopct='%1.1f%%', startangle=90)
+    ax_pie.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    
+    pie_img = io.BytesIO()
+    fig_pie.savefig(pie_img, format='png')
+    pie_img.seek(0)
+    pie_plot_url = base64.b64encode(pie_img.getvalue()).decode('utf8')
+
+    # Bar Plot (FOMO distribution across groups)
+    categories = ['Low FoMO',  'High FoMO']
+    bar_heights = [low_fomo_count,  high_fomo_count]
+    
+    fig_bar, ax_bar = plt.subplots()
+    ax_bar.bar(categories, bar_heights, color=['green',  'red'])
+    ax_bar.set_title('FOMO Distribution')
+    ax_bar.set_xlabel('FOMO Levels')
+    ax_bar.set_ylabel('Number of Students')
+
+    bar_img = io.BytesIO()
+    fig_bar.savefig(bar_img, format='png')
+    bar_img.seek(0)
+    bar_plot_url = base64.b64encode(bar_img.getvalue()).decode('utf8')
+
+   
+
+    
+
+    # Render the fomo_visualisation.html template and pass the plot URLs
+    return render_template('fomo_visualisation.html', 
+                           pie_plot_url=pie_plot_url,
+                           bar_plot_url=bar_plot_url)
+
+
+
+
+# Route for FOMO visualization
+@app.route('/adhd_visualisation', methods=['GET'])
+def adhd_visualisation():
+    # Ensure you get the data from the database
+    cursor = mysql.connection.cursor(DictCursor)
+    cursor.execute("SELECT ADHD FROM student")  # Fetch FOMO category data from the student table
+    students = cursor.fetchall()
+    cursor.close()
+
+    # Count occurrences of each FOMO category
+    low_ADHD_count = 0
+  
+    high_ADHD_count = 0
+
+    for student in students:
+        ADHD_category = student['ADHD']  # Assuming FOMO is stored as a string like 'Low FOMO', 'Moderate FOMO', 'High FOMO'
+        
+        if ADHD_category == 'Low Impulsivity/Restlessness':
+            low_ADHD_count += 1
+  
+        elif ADHD_category == 'High Impulsivity/Restlessness':
+            high_ADHD_count += 1
+
+    # Pie Chart
+    pie_labels = ['Low Impulsivity/Restlessness', 'High Impulsivity/Restlessness']
+    pie_sizes = [low_ADHD_count, high_ADHD_count]
+    pie_colors = ['green', 'red']
+
+    fig_pie, ax_pie = plt.subplots()
+    ax_pie.pie(pie_sizes, labels=pie_labels, colors=pie_colors, autopct='%1.1f%%', startangle=90)
+    ax_pie.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    
+    pie_img = io.BytesIO()
+    fig_pie.savefig(pie_img, format='png')
+    pie_img.seek(0)
+    pie_plot_url = base64.b64encode(pie_img.getvalue()).decode('utf8')
+
+    # Bar Plot (FOMO distribution across groups)
+    categories = ['Low Impulsivity/Restlessness', 'High Impulsivity/Restlessness']
+    bar_heights = [low_ADHD_count, high_ADHD_count]
+    
+    fig_bar, ax_bar = plt.subplots()
+    ax_bar.bar(categories, bar_heights, color=['green',  'red'])
+    ax_bar.set_title('ADHD Distribution')
+    ax_bar.set_xlabel('ADHD Levels')
+    ax_bar.set_ylabel('Number of Students')
+
+    bar_img = io.BytesIO()
+    fig_bar.savefig(bar_img, format='png')
+    bar_img.seek(0)
+    bar_plot_url = base64.b64encode(bar_img.getvalue()).decode('utf8')
+
+
+    # Render the fomo_visualisation.html template and pass the plot URLs
+    return render_template('adhd_visualisation.html', 
+                           pie_plot_url=pie_plot_url,
+                           bar_plot_url=bar_plot_url)
+
+
+
+# Route for FOMO visualization
+@app.route('/depression_visualisation', methods=['GET'])
+def depression_visualisation():
+    # Ensure you get the data from the database
+    cursor = mysql.connection.cursor(DictCursor)
+    cursor.execute("SELECT depression FROM student")  # Fetch FOMO category data from the student table
+    students = cursor.fetchall()
+    cursor.close()
+
+    # Count occurrences of each FOMO category
+    low_depression_count = 0
+  
+    high_depression_count = 0
+
+    for student in students:
+        depression_category = student['depression']  # Assuming FOMO is stored as a string like 'Low FOMO', 'Moderate FOMO', 'High FOMO'
+        
+        if depression_category == 'Not Depressed':
+            low_depression_count += 1
+  
+        elif depression_category == 'Depressed':
+            high_depression_count += 1
+
+    # Pie Chart
+    pie_labels = ['Not Depressed', 'Depressed']
+    pie_sizes = [low_depression_count, high_depression_count]
+    pie_colors = ['green', 'red']
+
+    fig_pie, ax_pie = plt.subplots()
+    ax_pie.pie(pie_sizes, labels=pie_labels, colors=pie_colors, autopct='%1.1f%%', startangle=90)
+    ax_pie.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    
+    pie_img = io.BytesIO()
+    fig_pie.savefig(pie_img, format='png')
+    pie_img.seek(0)
+    pie_plot_url = base64.b64encode(pie_img.getvalue()).decode('utf8')
+
+    # Bar Plot (FOMO distribution across groups)
+    categories = ['Not Depressed', 'Depressed']
+    bar_heights = [low_depression_count, high_depression_count]
+    
+    fig_bar, ax_bar = plt.subplots()
+    ax_bar.bar(categories, bar_heights, color=['green',  'red'])
+    ax_bar.set_title('Depression Distribution')
+    ax_bar.set_xlabel('Depression Levels')
+    ax_bar.set_ylabel('Number of Students')
+
+    bar_img = io.BytesIO()
+    fig_bar.savefig(bar_img, format='png')
+    bar_img.seek(0)
+    bar_plot_url = base64.b64encode(bar_img.getvalue()).decode('utf8')
+    
+
+    # Render the fomo_visualisation.html template and pass the plot URLs
+    return render_template('depression_visualisation.html', 
+                           pie_plot_url=pie_plot_url,
+                           bar_plot_url=bar_plot_url)
+
+
+
+
+# Route for FOMO visualization
+@app.route('/anxiety_visualisation', methods=['GET'])
+def anxiety_visualisation():
+    # Ensure you get the data from the database
+    cursor = mysql.connection.cursor(DictCursor)
+    cursor.execute("SELECT anxiety FROM student")  # Fetch FOMO category data from the student table
+    students = cursor.fetchall()
+    cursor.close()
+
+    # Count occurrences of each FOMO category
+    low_anxiety_count = 0
+  
+    high_anxiety_count = 0
+
+    for student in students:
+        anxiety_category = student['anxiety']  # Assuming FOMO is stored as a string like 'Low FOMO', 'Moderate FOMO', 'High FOMO'
+        
+        if anxiety_category == ' Not Anxiety':
+            low_anxiety_count += 1
+  
+        elif anxiety_category == ' Anxiety':
+            high_anxiety_count += 1
+
+    # Pie Chart
+    pie_labels = ['Not Anxiety', 'Anxiety']
+    pie_sizes = [low_anxiety_count, high_anxiety_count]
+    pie_colors = ['green', 'red']
+
+    fig_pie, ax_pie = plt.subplots()
+    ax_pie.pie(pie_sizes, labels=pie_labels, colors=pie_colors, autopct='%1.1f%%', startangle=90)
+    ax_pie.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    
+    pie_img = io.BytesIO()
+    fig_pie.savefig(pie_img, format='png')
+    pie_img.seek(0)
+    pie_plot_url = base64.b64encode(pie_img.getvalue()).decode('utf8')
+
+    # Bar Plot (FOMO distribution across groups)
+    categories = ['Not Anxiety', 'Anxiety']
+    bar_heights = [low_anxiety_count, high_anxiety_count]
+    
+    fig_bar, ax_bar = plt.subplots()
+    ax_bar.bar(categories, bar_heights, color=['green',  'red'])
+    ax_bar.set_title('anxiety Distribution')
+    ax_bar.set_xlabel('anxiety Levels')
+    ax_bar.set_ylabel('Number of Students')
+
+    bar_img = io.BytesIO()
+    fig_bar.savefig(bar_img, format='png')
+    bar_img.seek(0)
+    bar_plot_url = base64.b64encode(bar_img.getvalue()).decode('utf8')
+    
+
+    # Render the fomo_visualisation.html template and pass the plot URLs
+    return render_template('anxiety_visualisation.html', 
+                           pie_plot_url=pie_plot_url,
+                           bar_plot_url=bar_plot_url)
+
+
+
+
+
+# Route for FOMO visualization
+@app.route('/stress_visualisation', methods=['GET'])
+def stress_visualisation():
+    # Ensure you get the data from the database
+    cursor = mysql.connection.cursor(DictCursor)
+    cursor.execute("SELECT stress FROM student")  # Fetch FOMO category data from the student table
+    students = cursor.fetchall()
+    cursor.close()
+
+    # Count occurrences of each FOMO category
+    low_stress_count = 0
+  
+    high_stress_count = 0
+
+    for student in students:
+        stress_category = student['stress']  # Assuming FOMO is stored as a string like 'Low FOMO', 'Moderate FOMO', 'High FOMO'
+        
+        if stress_category == 'Not Stressed':
+            low_stress_count += 1
+  
+        elif stress_category == 'Stressed':
+            high_stress_count += 1
+
+    # Pie Chart
+    pie_labels = ['Not stressed', 'Stressed']
+    pie_sizes = [low_stress_count, high_stress_count]
+    pie_colors = ['green', 'red']
+
+    fig_pie, ax_pie = plt.subplots()
+    ax_pie.pie(pie_sizes, labels=pie_labels, colors=pie_colors, autopct='%1.1f%%', startangle=90)
+    ax_pie.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    
+    pie_img = io.BytesIO()
+    fig_pie.savefig(pie_img, format='png')
+    pie_img.seek(0)
+    pie_plot_url = base64.b64encode(pie_img.getvalue()).decode('utf8')
+
+    # Bar Plot (FOMO distribution across groups)
+    categories = ['Not stressed', 'Stressed']
+    bar_heights = [low_stress_count, high_stress_count]
+    
+    fig_bar, ax_bar = plt.subplots()
+    ax_bar.bar(categories, bar_heights, color=['green',  'red'])
+    ax_bar.set_title('Stress Distribution')
+    ax_bar.set_xlabel('Stress Levels')
+    ax_bar.set_ylabel('Number of Students')
+
+    bar_img = io.BytesIO()
+    fig_bar.savefig(bar_img, format='png')
+    bar_img.seek(0)
+    bar_plot_url = base64.b64encode(bar_img.getvalue()).decode('utf8')
+    
+
+    # Render the fomo_visualisation.html template and pass the plot URLs
+    return render_template('stress_visualisation.html', 
+                           pie_plot_url=pie_plot_url,
+                           bar_plot_url=bar_plot_url)
+
+
 
 if __name__ == '__main__':
     app.secret_key = os.urandom(12)
