@@ -68,7 +68,6 @@ stress_target_encoder_filename = r'dass_new\stress\target_encoder.pkl'
 depression_model_filename = r'dass_new\depression\depression_model.pkl'
 depression_target_encoder_filename = r'dass_new\depression\target_encoder.pkl'
 
-
 @app.route('/')
 def home():
    return render_template('index.html')
@@ -459,7 +458,6 @@ answer_mapping = {
     "Applied to me to some degree": 1,
     "Did not apply to me at all": 0
 }
-
 # Route to directly show the Stress questionnaire page
 @app.route('/service_stress')
 def service_stress():
@@ -472,9 +470,6 @@ def submit_stress():
         # Load the Stress model and target encoder
         model = joblib.load(stress_model_filename)
         target_encoder = joblib.load(stress_target_encoder_filename)
-
-        # Retrieve form data (Student info and Stress questionnaire answers)
-       
 
         # Retrieve answers to Stress questions (q1 to q7)
         answers = []
@@ -496,65 +491,62 @@ def submit_stress():
         # Flatten to 1D array for prediction (model expects 2D input)
         encoded_answers = np.array(encoded_answers).reshape(1, -1)
 
-        # Make prediction using the trained model (pass the 1D array inside a list)
+        # Make prediction using the trained model
         y_pred_encoded = model.predict(encoded_answers)  # The model expects 2D input
         print(f"Prediction Output (Encoded): {y_pred_encoded}")
 
         # Inverse transform the prediction to get the category (Stress level)
         y_pred = target_encoder.inverse_transform(y_pred_encoded)
 
-        # Final result: Student information, answers, and predicted category
-        result = f"  Predicted Stress Category: {y_pred[0]}"
-        result = f"{y_pred[0]}"
+        # Final result: Predicted Stress Category
+        result = f"Predicted Stress Category: {y_pred[0]}"
+        print(f"Final Predicted Result: {result}")
 
+        # Check if the student is logged in
         if 'student_id' in session:
             student_id = session['student_id']
 
-            # Update the FOMO column in the database for the logged-in student
+            # Update the database for the logged-in student
             cursor = mysql.connection.cursor()
 
             try:
-                # Debugging: Print query and parameters
-                print(f"Executing query: UPDATE student SET stress = '{result}' WHERE student_id = '{student_id}'")
+                # Debugging: Print the query and parameters
+                print(f"Executing query: UPDATE student SET Stress = '{result}' WHERE student_id = '{student_id}'")
 
-                # Update query
+                # Update the student record with the stress value
                 query = """
                 UPDATE student
-                SET stress = %s
+                SET Stress = %s
                 WHERE student_id = %s
                 """
                 cursor.execute(query, (result, student_id))
                 
-                # Commit the changes
+                # Commit the changes to the database
                 mysql.connection.commit()
 
-                # Success message
-                response_message = f"stress value '{result}' updated successfully for student_id {student_id}."
+                # Set success message
+                alert_message = f"Stress level '{y_pred[0]}' updated successfully for student ID {student_id}."
             except Exception as e:
-                # Handle database errors
-                print(f"Error: {e}")  # Log the error
+                # Handle any database errors
+                print(f"Database error: {e}")  # Log the error
                 mysql.connection.rollback()  # Rollback changes on error
-                response_message = f"Error updating stress value: {e}"
+                alert_message = f"Error updating Stress value: {e}"
             finally:
                 cursor.close()
 
-            return response_message
+            # Render the home page with the alert message
+            return render_template('home.html', alert_message=alert_message)
         else:
             # If no student session is found
-            return "No active session found. Please log in.", 403
-
-
-        # Store the final result in a text file (append mode)
-        with open("stress_results.txt", "a") as file:
-            file.write(result + "\n")
-
-        # Display the predicted result on the result page
-        return render_template('result.html', result=result)
+            alert_message = "No active session found. Please log in."
+            return render_template('home.html', alert_message=alert_message)
 
     except Exception as e:
-        # Log the error message
-        print(f"Error in submit_stress: {str(e)}")
-        return f"An error occurred: {str(e)}"
+        # Handle general errors
+        print(f"Error in submit_stress: {e}")
+        alert_message = f"An error occurred: {e}"
+        return render_template('home.html', alert_message=alert_message)
+
 
 
 @app.route('/service_anxiety')
@@ -566,69 +558,53 @@ def service_anxiety():
 @app.route('/submit_anxiety', methods=['POST'])
 def submit_anxiety():
     try:
-        # Load the Anxiety model and target encoder (since only these are available)
+        # Load the Anxiety model and target encoder
         model = joblib.load(anxiety_model_filename)
         target_encoder = joblib.load(anxiety_target_encoder_filename)
-
-        # Retrieve form data (Anxiety questionnaire answers)
-        
-
-        # Debug: Print the retrieved form data
-        
-        print(f"Form Data: {request.form}")
 
         # Retrieve answers to Anxiety questions (q1 to q7)
         answers = []
         for i in range(1, 8):  # From q1 to q7
             answer = request.form.get(f'q{i}')
-            if not answer:  # If any answer is missing, handle it
-                print(f"Missing answer for q{i}")
-                answer = 'Did not apply to me at all'  # Default or placeholder answer
+            if not answer:  # Handle empty answers
+                answer = 'Did not apply to me at all'  # Default to 'Did not apply to me at all'
             answers.append(answer)
 
-        # Map the answers to numerical values
-        answer_mapping = {
-            "Did not apply to me at all": 0,
-            "Applied to me to some degree": 1,
-            "Applied to me a considerable degree": 2,
-            "Applied to me very much": 3
-        }
+        # Debug: Check if answers are as expected
+        print(f"Answers: {answers}")
 
-        # Convert the answers to numerical values
-        encoded_answers = [answer_mapping.get(answer, -1) for answer in answers]
+        # Convert the answers to numerical values using the mapping
+        encoded_answers = [answer_mapping[answer] for answer in answers]
 
-        # Check for missing or invalid answers (handle cases where mapping fails)
-        if -1 in encoded_answers:
-            return "Error: One or more answers are invalid."
-
-        # Debugging: Print the encoded answers
+        # Debug: Check encoded answers
         print(f"Encoded Answers: {encoded_answers}")
 
-        # Convert the answers to a DataFrame to match the model's input column names (Q1, Q2, ..., Q7)
-        df_input = pd.DataFrame([encoded_answers], columns=[f'Q{i}' for i in range(1, 8)])
-
-        # Debugging: Print the DataFrame for prediction
-        print(f"DataFrame for prediction: {df_input}")
+        # Flatten to 1D array for prediction (model expects 2D input)
+        encoded_answers = np.array(encoded_answers).reshape(1, -1)
 
         # Make prediction using the trained model
-        y_pred_encoded = model.predict(df_input)
+        y_pred_encoded = model.predict(encoded_answers)  # The model expects 2D input
+        print(f"Prediction Output (Encoded): {y_pred_encoded}")
+
+        # Inverse transform the prediction to get the category (Anxiety level)
         y_pred = target_encoder.inverse_transform(y_pred_encoded)
 
-        # Final result: Student information, answers, and predicted category
-        result = f"  Predicted Anxiety Category: {y_pred[0]}"
-        result = f"{y_pred[0]}"
+        # Final result: Predicted Anxiety Category
+        result = f"Predicted Anxiety Category: {y_pred[0]}"
+        print(f"Final Predicted Result: {result}")
 
+        # Check if the student is logged in
         if 'student_id' in session:
             student_id = session['student_id']
 
-            # Update the FOMO column in the database for the logged-in student
+            # Update the database for the logged-in student
             cursor = mysql.connection.cursor()
 
             try:
-                # Debugging: Print query and parameters
+                # Debugging: Print the query and parameters
                 print(f"Executing query: UPDATE student SET anxiety = '{result}' WHERE student_id = '{student_id}'")
 
-                # Update query
+                # Update the student record with the anxiety value
                 query = """
                 UPDATE student
                 SET anxiety = %s
@@ -636,38 +612,37 @@ def submit_anxiety():
                 """
                 cursor.execute(query, (result, student_id))
                 
-                # Commit the changes
+                # Commit the changes to the database
                 mysql.connection.commit()
 
-                # Success message
-                response_message = f"anxiety value '{result}' updated successfully for student_id {student_id}."
+                # Set success message
+                response_message = f"Anxiety level '{y_pred[0]}' updated successfully for student ID {student_id}."
             except Exception as e:
-                # Handle database errors
-                print(f"Error: {e}")  # Log the error
+                # Handle any database errors
+                print(f"Database error: {e}")  # Log the error
                 mysql.connection.rollback()  # Rollback changes on error
                 response_message = f"Error updating anxiety value: {e}"
             finally:
                 cursor.close()
 
-            return response_message
+            # Store the final result in a text file (append mode)
+            with open("anxiety_results.txt", "a") as file:
+                file.write(result + "\n")
+
+            # Set the alert message
+            alert_message = f"Anxiety value '{y_pred[0]}' updated successfully."
+
+            # Render the home page with the alert message
+            return render_template('home.html', alert_message=alert_message)
         else:
             # If no student session is found
-            return "No active session found. Please log in.", 403
+            return render_template('home.html', alert_message="No active session found. Please log in.", status_code=403)
 
-
-        
-
-        # Store the final result in a text file (append mode)
-        with open("anxiety_results.txt", "a") as file:
-            file.write(result + "\n")
-
-        # Display the predicted result
-        return render_template('result.html', result=result)
-    
     except Exception as e:
         # Log the error message
         print(f"Error in submit_anxiety: {str(e)}")
-        return f"An error occurred: {str(e)}"
+        alert_message = f"An error occurred: {e}"
+        return render_template('home.html', alert_message=alert_message)
 
 
 
@@ -685,14 +660,12 @@ def submit_depression():
         model = joblib.load(depression_model_filename)
         target_encoder = joblib.load(depression_target_encoder_filename)
 
-        
-
         # Retrieve answers to Depression questions (q1 to q7)
         answers = []
         for i in range(1, 8):  # From q1 to q7
             answer = request.form.get(f'q{i}')
             if not answer:  # Handle missing answers
-                answer = 'Not Answered'  # You can set a default value if needed
+                answer = 'Not Answered'  # Default to 'Not Answered' if missing
             answers.append(answer)
 
         # Debugging: Print the answers
@@ -722,22 +695,21 @@ def submit_depression():
         y_pred_encoded = model.predict(df_input)
         y_pred = target_encoder.inverse_transform(y_pred_encoded)
 
-        # Final result: Student information, answers, and predicted category
-        result = f"  Predicted Depression Category: {y_pred[0]}"
+        # Final result: Predicted Depression Category
+        result = f"Predicted Depression Category: {y_pred[0]}"
 
-        result = f"{y_pred[0]}"
-
+        # Check if student session exists
         if 'student_id' in session:
             student_id = session['student_id']
 
-            # Update the FOMO column in the database for the logged-in student
+            # Update the database for the logged-in student
             cursor = mysql.connection.cursor()
 
             try:
-                # Debugging: Print query and parameters
+                # Debugging: Print the query and parameters
                 print(f"Executing query: UPDATE student SET depression = '{result}' WHERE student_id = '{student_id}'")
 
-                # Update query
+                # Update the student record with the depression value
                 query = """
                 UPDATE student
                 SET depression = %s
@@ -745,40 +717,34 @@ def submit_depression():
                 """
                 cursor.execute(query, (result, student_id))
                 
-                # Commit the changes
+                # Commit the changes to the database
                 mysql.connection.commit()
 
-                # Success message
-                response_message = f"depression value '{result}' updated successfully for student_id {student_id}."
+                # Set success message
+                alert_message = f"Depression level '{y_pred[0]}' updated successfully for student ID {student_id}."
             except Exception as e:
-                # Handle database errors
-                print(f"Error: {e}")  # Log the error
+                # Handle any database errors
+                print(f"Database error: {e}")  # Log the error
                 mysql.connection.rollback()  # Rollback changes on error
-                response_message = f"Error updating depression value: {e}"
+                alert_message = f"Error updating depression value: {e}"
             finally:
                 cursor.close()
 
-            return response_message
+            # Store the final result in a text file (append mode)
+            with open("depression_results.txt", "a") as file:
+                file.write(result + "\n")
+
+            # Render the home page with the alert message
+            return render_template('home.html', alert_message=alert_message)
         else:
             # If no student session is found
-            return "No active session found. Please log in.", 403
+            return render_template('home.html', alert_message="No active session found. Please log in.", status_code=403)
 
-        # Store the final result in a text file (append mode)
-        with open("depression_results.txt", "a") as file:
-            file.write(result + "\n")
-
-        # Display the predicted result
-        return render_template('result.html', result=result)
-    
     except Exception as e:
         # Log the error message
         print(f"Error in submit_depression: {str(e)}")
-        return f"An error occurred: {str(e)}"
-
-
-
-
-
+        alert_message = f"An error occurred: {e}"
+        return render_template('home.html', alert_message=alert_message)
 
 
 
