@@ -509,7 +509,7 @@ def submit_stress():
 
             try:
                 # Debugging: Print the query and parameters
-                print(f"Executing query: UPDATE student SET Stress = '{result}' WHERE student_id = '{student_id}'")
+                print(f"Executing query: UPDATE student SET Stress = '{y_pred[0]}' WHERE student_id = '{student_id}'")
 
                 # Update the student record with the stress value
                 query = """
