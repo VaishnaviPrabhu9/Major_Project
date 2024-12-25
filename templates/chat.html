@@ -166,17 +166,7 @@
         function displayMessage(message, className) {
             const messageElement = document.createElement("div");
             messageElement.className = className;
-
-            if (className === "bot-message") {
-                // Add chatbot gif to the left of the response
-                const gif = document.createElement("img");
-                gif.src = "chatbot.gif"; // Replace with the actual path to your chatbot gif
-                messageElement.appendChild(gif);
-            }
-
-            const textNode = document.createElement("span");
-            textNode.textContent = message;
-            messageElement.appendChild(textNode);
+            messageElement.textContent = message;
 
             chatBox.appendChild(messageElement);
             chatBox.scrollTop = chatBox.scrollHeight;
