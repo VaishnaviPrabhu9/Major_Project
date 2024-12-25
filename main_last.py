@@ -497,7 +497,7 @@ def submit_stress():
         y_pred = target_encoder.inverse_transform(y_pred_encoded)
 
         # Final result: Predicted Stress Category
-        result = f"Predicted Stress Category: {y_pred[0]}"
+        result = f"{y_pred[0]}"
         print(f"Final Predicted Result: {result}")
 
         # Check if the student is logged in
@@ -588,7 +588,7 @@ def submit_anxiety():
         y_pred = target_encoder.inverse_transform(y_pred_encoded)
 
         # Final result: Predicted Anxiety Category
-        result = f"Predicted Anxiety Category: {y_pred[0]}"
+        result = f" {y_pred[0]}"
         print(f"Final Predicted Result: {result}")
 
         # Check if the student is logged in
@@ -694,7 +694,7 @@ def submit_depression():
         y_pred = target_encoder.inverse_transform(y_pred_encoded)
 
         # Final result: Predicted Depression Category
-        result = f"Predicted Depression Category: {y_pred[0]}"
+        result = f"{y_pred[0]}"
 
         # Check if student session exists
         if 'student_id' in session:
