@@ -427,8 +427,8 @@ def submit():
             # Commit the changes
             mysql.connection.commit()
 
-            # Success message
-            response_message = f"FOMO value '{result}' updated successfully for student_id {student_id}."
+            # Set success message
+            response_message = f"FOMO value '{result}' updated successfully for student ID {student_id}."
         except Exception as e:
             # Handle database errors
             print(f"Error: {e}")  # Log the error
@@ -437,18 +437,11 @@ def submit():
         finally:
             cursor.close()
 
-        return response_message
+        # Render home page with alert message
+        return render_template('home.html', alert_message=response_message)
     else:
         # If no student session is found
-        return "No active session found. Please log in.", 403
-
-
-    # Print out the results for debugging (optional)
-    
-    print(f"FoMO Answers: {answers}")
-    print(f"Predicted FoMO Category: {y_pred[0]}")
-
-    return render_template('result.html', result=result)
+        return render_template('home.html', alert_message="No active session found. Please log in.")
 
 
 # Directly show the Stress questionnaire page
