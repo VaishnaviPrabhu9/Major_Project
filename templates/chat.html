@@ -118,32 +118,31 @@
             // Clear input field
             userInput.value = "";
 
-            // Simulate bot response (replace this with your API call)
-            setTimeout(() => {
-                const botResponse = "This is a chatbot response.";
-                displayMessage(botResponse, "bot-message", true);
-            }, 1000);
+            // Send query to the server
+            fetch("/get_response", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ query: query }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        displayMessage(data.error, "bot-message");
+                    } else {
+                        const responseMessage = ${data.answer};
+                        displayMessage(responseMessage, "bot-message");
+                    }
+                })
+                .catch(() => {
+                    displayMessage("An error occurred. Please try again.", "bot-message");
+                });
         });
 
-        function displayMessage(message, className, isBot = false) {
-            const messageContainer = document.createElement("div");
-            messageContainer.className = "message-container";
-
-            if (isBot) {
-                // Add chatbot icon for bot messages
-                const botIcon = document.createElement("img");
-                botIcon.src = "chatbot.gif"; // Replace with the correct path to your GIF
-                botIcon.alt = "Chatbot Icon";
-                botIcon.className = "chatbot-icon";
-                messageContainer.appendChild(botIcon);
-            }
-
+        function displayMessage(message, className) {
             const messageElement = document.createElement("div");
             messageElement.className = className;
             messageElement.innerHTML = message;
-
-            messageContainer.appendChild(messageElement);
-            chatBox.appendChild(messageContainer);
+            chatBox.appendChild(messageElement);
             chatBox.scrollTop = chatBox.scrollHeight;
         }
     </script>
