@@ -126,7 +126,7 @@ def contactpage():
 # Initialize MySQL
 mysql = MySQL(app)
 
-@app.route('/register', methods=['POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         student_name = request.form['student-name']
@@ -142,19 +142,28 @@ def register():
         # Check if passwords match
         if password != confirm_password:
             flash('Passwords do not match', 'error')
-            return redirect('/')
+            return render_template('student_register.html')  # Stay on the same page with error message
 
+        # Check if student ID already exists
+        cur = mysql.connection.cursor()
+        cur.execute('SELECT * FROM student WHERE student_id = %s', (student_id,))
+        existing_student = cur.fetchone()
+        if existing_student:
+            flash('Student ID already exists. Please choose a different ID.', 'error')
+            return render_template('student_register.html')  # Stay on the same page with error message
+        
         # Database operation
-        cur = mysql.connection.cursor()  # Corrected usage
         cur.execute('''
-            INSERT INTO student (student_name, student_id, class, section, age, weight_kg, contact_number, password, confirm_password)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-        ''', (student_name, student_id, class_name, section, age, weight, contact, password, confirm_password))
+            INSERT INTO student (student_name, student_id, class, section, age, weight_kg, contact_number, password)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        ''', (student_name, student_id, class_name, section, age, weight, contact, password))
         mysql.connection.commit()
         cur.close()
 
         flash('Student registered successfully!', 'success')
-        return redirect('/')
+        return render_template('login.html')
+
+
 
 
 @app.route('/register_parent', methods=['GET', 'POST'])
@@ -361,14 +370,14 @@ def login():
 
         cursor.close()
         
-
         if result:
             # Start session and redirect to home
             session['student_id'] = result['student_id']
+            flash("Login successful!", "success")
             return redirect(url_for('home1'))
         else:
-            error = "Invalid username or password. Please try again."
-            return render_template('login.html', error=error)
+            flash("Invalid username or password. Please try again.", "danger")
+            return redirect(url_for('login'))
 
     return render_template('login.html')
 
