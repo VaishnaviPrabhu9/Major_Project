@@ -14,12 +14,12 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background: white;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+        font-family: 'Arial', sans-serif;
+        background: white;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         }
 
         html {
@@ -104,24 +104,28 @@
 
         /* Login Form Styles */
         .login-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative; /* Change absolute to relative */
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
             background: white;
-            padding: 30px 40px; /* Adjusted padding for better fit */
-            border-radius: 20px; /* Increased border-radius for more rounded edges */
-            text-align: center;
+            padding: 30px;
+            border-radius: 20px;
             width: 100%;
-            max-width: 350px; /* Decreased width */
-            height: auto; /* Automatically adjusts based on content */
+            max-width: 350px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            margin-top: 70px;
-            margin-left: 580px;
-            
+            margin-top:0; /* Ensure space from navbar */
+            margin-bottom: 50px; /* Ensure space from footer */
+            z-index: 500;
         }
-
         .login-container h2 {
             margin-bottom: 20px;
             font-size: 1.8rem;
             color: #2c3e50;
-
         }
 
         .form-group {
@@ -154,21 +158,21 @@
         }
 
         .login-button {
-            background:#2c3e50;
+            background: #2c3e50;
             color: white;
             border: none;
-            padding: 10px 8px; /* Adjusted button padding */
+            padding: 10px 8px;
             font-size: 1rem;
-            border-radius: 15px; /* More rounded button */
+            border-radius: 13px;
             cursor: pointer;
-            width: 75%;
+            width: 90%;
+            padding: 13px;
             transition: background-color 0.3s;
         }
 
-        .login-button:hover {
-            background: #405f76;
-        }
-
+.login-button:hover {
+    background: #405f76;
+}
         /* Footer Styles */
         footer {
             background: #2c3e50;
@@ -181,6 +185,131 @@
         footer p {
             margin: 0;
         }
+        .menu-button {
+            display: none;
+            background-color: #2c3e50;
+            color: white;
+            font-size: 30px;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        /* Mobile View - Show/hide the nav menu */
+        .nav-menu {
+            display: flex;
+        }
+
+        .nav-menu.mobile {
+            display: block;
+        }
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 15px;
+    }
+
+    .nav-menu {
+        flex-direction: row;
+        align-items: center;
+        display: none;
+        position: absolute;
+        background: #2c3e50;
+        width: 100%;
+        top: 60px;
+        left: 0;
+    }
+
+    .nav-menu.mobile {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    position: fixed;
+    top: 60px;  /* Adjust this value based on your navbar height */
+    left: 0;
+    width: 100%;
+    z-index: 1000; 
+    }
+
+    .menu-button {
+        display: block;
+            }
+
+    .login-container {
+        width: 80%;
+        margin-top: 100px;
+    }
+
+    .login-container h2 {
+        font-size: 1.5rem;
+    }
+
+    .form-group input {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    .login-button {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 10px;
+    }
+
+    .nav-menu {
+        gap: 10px;
+    }
+
+    .login-container {
+        width: 90%;
+        margin-top: 20px;
+    }
+
+    .login-container h2 {
+        font-size: 1.2rem;
+    }
+
+    .form-group input {
+        padding: 8px;
+        font-size: 0.85rem;
+    }
+
+    .login-button {
+        padding: 10px;
+        font-size: 0.85rem;
+    }
+}
+    .flash-messages {
+        padding: 10px;
+        border-radius: 8px;     
+    }
+    .flash-messages ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+    .flash-messages ul li {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 10px;
+        border-radius: 8px;
+
+    }
+    .flash-messages .success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+    .flash-messages .danger {
+        background-color: #f8d7da;
+        color: #721c24;
+    }   
     </style>
 </head>
 
@@ -191,6 +320,7 @@
             <div class="logo">
                 <img src="{{ url_for('static', filename='Logo.png') }}" alt="Logo">
             </div>
+            <button class="menu-button" onclick="toggleMenu()">☰</button>
             <ul class="nav-menu">
                 <li><a href="/home">Home</a></li>
                 <li><a href="/about">About Us</a></li>
@@ -229,13 +359,43 @@
             </div>
             <button type="submit" class="login-button">Login</button>
         </form>
+        <div class="flash-messages">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul>
+                            {% for message in messages %}
+                                <li class="{{ 'success' if 'success' in message else 'danger' }}">{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
+            </div>
     </div>
 
     <!-- Footer -->
     <footer>
         <p>&copy; 2024 ManoShakthi. All rights reserved.</p>
     </footer>
+    <script>
+        function toggleMenu() {
+            const menu = document.querySelector('.nav-menu');
+            menu.classList.toggle('mobile');
+        }
+
     
+    setTimeout(function() {
+            const flashMessages = document.querySelector('.flash-messages');
+            if (flashMessages) {
+                flashMessages.style.display = 'none';
+            }
+        }, 5000);
+        document.addEventListener("DOMContentLoaded", function() {
+            const flashMessages = document.querySelector('.flash-messages');
+            if (flashMessages) {
+                flashMessages.style.display = 'block';
+            }
+        });
+    </script>
 </body>
 
 </html>

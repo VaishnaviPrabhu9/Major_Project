@@ -198,7 +198,7 @@ def contactpage():
 # Initialize MySQL
 mysql = MySQL(app)
 
-@app.route('/register', methods=['POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         student_name = request.form['student-name']
@@ -217,17 +217,15 @@ def register():
             return redirect('/register')
 
         # Database operation
-        cur = mysql.connection.cursor()  # Corrected usage
         cur.execute('''
-            INSERT INTO student (student_name, student_id, class, section, age, weight_kg, contact_number, password, confirm_password)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-        ''', (student_name, student_id, class_name, section, age, weight, contact, password, confirm_password))
+            INSERT INTO student (student_name, student_id, class, section, age, weight_kg, contact_number, password)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        ''', (student_name, student_id, class_name, section, age, weight, contact, password))
         mysql.connection.commit()
         cur.close()
 
         flash('Student registered successfully!', 'success')
-        return redirect('/')
-
+        return render_template('login.html')
 
 @app.route('/register_parent', methods=['GET', 'POST'])
 def register_parent():
@@ -448,14 +446,14 @@ def login():
 
         cursor.close()
         
-
         if result:
             # Start session and redirect to home
             session['student_id'] = result['student_id']
+            flash("Login successful!", "success")
             return redirect(url_for('home1'))
         else:
-            error = "Invalid username or password. Please try again."
-            return render_template('login.html', error=error)
+            flash("Invalid username or password. Please try again.", "danger")
+            return redirect(url_for('login'))
 
     return render_template('login.html')
 
