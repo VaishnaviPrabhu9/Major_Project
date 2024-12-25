@@ -22,6 +22,13 @@
     color: #333;
             position: relative;
         }
+        .logo img{
+            margin-left: 10px;
+            width: 180px;
+            height: 37px;
+        }
+
+
         /* Full-width header */
         .header {
             display: flex;
@@ -153,7 +160,9 @@
 <body>
     <!-- Full-width Header -->
     <div class="header">
-        <img src="logo.png" alt="Logo">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='Logo.png') }}" alt="Logo">
+        </div>
         <button onclick="history.back()">Log out</button>
     </div>
 

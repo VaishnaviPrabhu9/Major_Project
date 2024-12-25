@@ -69,7 +69,11 @@ header p {
     font-size: 16px;
     margin: 5px 0 0;
 }
-
+    .logo img{
+        width: 180px;
+        height: 37px;
+        margin-left:10px;
+    }
 
         .dashboard-container {
             padding: 30px;
@@ -153,7 +157,9 @@ header p {
 </head>
 <body>
     <div class="header">
-        <img src="logo.png" alt="Logo">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='Logo.png') }}" alt="Logo">
+        </div>
         <button onclick="history.back()">Logout</button>
     </div>
 

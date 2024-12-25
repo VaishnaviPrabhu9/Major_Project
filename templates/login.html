@@ -36,7 +36,11 @@
             margin: 0;
             padding: 0;
         }
-
+        .logo img{
+            margin-left: 10px;
+            width: 180px;
+            height: 37px;
+        }
         /* Navbar Styles */
         .navbar {
             display: flex;
@@ -204,7 +208,7 @@
     <header>
         <div class="navbar">
             <div class="logo">
-                <h2>ManoShakthi</h2>
+                <img src="{{ url_for('static', filename='Logo.png') }}" alt="Logo">
             </div>
             <ul class="nav-menu">
                 <li><a href="/home">Home</a></li>

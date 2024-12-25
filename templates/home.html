@@ -57,7 +57,7 @@
             transition: background 0.3s;
             z-index: 1001;
             position: relative;
-            left: -2cm;
+            left: 0cm;
         }
 
         .header button:hover {
@@ -144,7 +144,7 @@
 
 <body>
     <div class="header">
-        <img src="logo.png" alt="Logo">
+        <img src="{{ url_for('static', filename='Logo.png') }}" alt="Logo">
         <button onclick="history.back()">Log out</button>
     </div>
 
