@@ -458,6 +458,11 @@ answer_mapping = {
     "Applied to me to some degree": 1,
     "Did not apply to me at all": 0
 }
+
+@app.route('/dass_dashboard')
+def dass_dashboard():
+    return render_template('dass_dashboard.html')
+
 # Route to directly show the Stress questionnaire page
 @app.route('/service_stress')
 def service_stress():
