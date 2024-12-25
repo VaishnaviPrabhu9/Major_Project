@@ -9,61 +9,87 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
+            background-color:White; /* Dark background for chatbot environment */
         }
         #chat-container {
             max-width: 600px;
             margin: 50px auto;
             padding: 20px;
-            background: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            background: #2a3b4d; /* Slightly lighter dark background */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 15px; /* Rounded corners */
         }
         h1 {
             text-align: center;
-            color: #333;
+            color: #ffffff; /* White color for title */
+            margin-bottom: 20px;
+            font-size: 24px;
         }
         #chat-box {
             max-height: 300px;
             overflow-y: auto;
-            border: 1px solid #ddd;
+            border: 1px solid #3c4f65;
             padding: 10px;
-            border-radius: 5px;
-            background: #fafafa;
+            border-radius: 10px;
+            background:rgb(226, 233, 243); /* Chat box background color */
             margin-bottom: 20px;
         }
-        .user-message, .bot-message {
+        .message-container {
+            display: flex;
+            align-items: flex-start;
             margin: 10px 0;
-            padding: 10px;
-            border-radius: 5px;
         }
         .user-message {
-            background: #e1f5fe;
-            text-align: right;
+            background:rgb(154, 190, 226); /* Blue for user messages */
+            color: #ffffff;
+            margin-left: auto;
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 80%;
+            line-height: 1.4;
+            font-size: 14px;
+            text-align: left;
         }
         .bot-message {
-            background: #ede7f6;
+            background:rgb(151, 151, 151); /* Gray for bot messages */
+            color: #ffffff;
+            margin-right: 10px;
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 80%;
+            line-height: 1.4;
+            font-size: 14px;
             text-align: left;
+        }
+        .chatbot-icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
         }
         #input-container {
             display: flex;
+            gap: 10px; /* Adds spacing between input and button */
         }
         #user-input {
             flex: 1;
             padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            border: 1px solid #3c4f65;
+            border-radius: 10px;
+            background: #3c4f65; /* Input field background */
+            color: #ffffff;
+            font-size: 14px;
         }
         #send-button {
             padding: 10px 20px;
-            background: #007bff;
-            color: #fff;
+            background: #1e90ff; /* Vibrant blue for button */
+            color: #ffffff;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
+            font-size: 14px;
         }
         #send-button:hover {
-            background: #0056b3;
+            background: #1c86ee; /* Slightly darker blue on hover */
         }
     </style>
 </head>
@@ -92,31 +118,32 @@
             // Clear input field
             userInput.value = "";
 
-            // Send query to the server
-            fetch("/get_response", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ query: query }),
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        displayMessage(data.error, "bot-message");
-                    } else {
-                        const responseMessage = `${data.answer}`;
-                        displayMessage(responseMessage, "bot-message");
-                    }
-                })
-                .catch(() => {
-                    displayMessage("An error occurred. Please try again.", "bot-message");
-                });
+            // Simulate bot response (replace this with your API call)
+            setTimeout(() => {
+                const botResponse = "This is a chatbot response.";
+                displayMessage(botResponse, "bot-message", true);
+            }, 1000);
         });
 
-        function displayMessage(message, className) {
+        function displayMessage(message, className, isBot = false) {
+            const messageContainer = document.createElement("div");
+            messageContainer.className = "message-container";
+
+            if (isBot) {
+                // Add chatbot icon for bot messages
+                const botIcon = document.createElement("img");
+                botIcon.src = "chatbot.gif"; // Replace with the correct path to your GIF
+                botIcon.alt = "Chatbot Icon";
+                botIcon.className = "chatbot-icon";
+                messageContainer.appendChild(botIcon);
+            }
+
             const messageElement = document.createElement("div");
             messageElement.className = className;
             messageElement.innerHTML = message;
-            chatBox.appendChild(messageElement);
+
+            messageContainer.appendChild(messageElement);
+            chatBox.appendChild(messageContainer);
             chatBox.scrollTop = chatBox.scrollHeight;
         }
     </script>
