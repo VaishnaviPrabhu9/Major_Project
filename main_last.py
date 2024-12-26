@@ -197,8 +197,7 @@ def contactpage():
 
 # Initialize MySQL
 mysql = MySQL(app)
-
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['POST'])
 def register():
     if request.method == 'POST':
         student_name = request.form['student-name']
@@ -214,19 +213,20 @@ def register():
         # Check if passwords match
         if password != confirm_password:
             flash('Passwords do not match', 'error')
-            return redirect('/register')
+            return redirect('/')
 
         # Database operation
+        cur = mysql.connection.cursor()  # Corrected usage
         cur.execute('''
-            INSERT INTO student (student_name, student_id, class, section, age, weight_kg, contact_number, password)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-        ''', (student_name, student_id, class_name, section, age, weight, contact, password))
+            INSERT INTO student (student_name, student_id, class, section, age, weight_kg, contact_number, password, confirm_password)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        ''', (student_name, student_id, class_name, section, age, weight, contact, password, confirm_password))
         mysql.connection.commit()
         cur.close()
 
         flash('Student registered successfully!', 'success')
-        return render_template('login.html')
-
+        return redirect('/login')
+    
 @app.route('/register_parent', methods=['GET', 'POST'])
 def register_parent():
     if request.method == 'POST':
@@ -446,16 +446,17 @@ def login():
 
         cursor.close()
         
+
         if result:
             # Start session and redirect to home
             session['student_id'] = result['student_id']
-            flash("Login successful!", "success")
             return redirect(url_for('home1'))
         else:
-            flash("Invalid username or password. Please try again.", "danger")
-            return redirect(url_for('login'))
+            error = "Invalid username or password. Please try again."
+            return render_template('login.html', error=error)
 
     return render_template('login.html')
+
 
 @app.route('/home1')
 def home1():
@@ -956,7 +957,7 @@ def fomo_visualisation():
     # Pie Chart
     pie_labels = ['Low FoMO', 'High FoMO']
     pie_sizes = [low_fomo_count, high_fomo_count]
-    pie_colors = ['green', 'red']
+    pie_colors = ['#99a4ae', '#5b6b7b']
 
     fig_pie, ax_pie = plt.subplots()
     ax_pie.pie(pie_sizes, labels=pie_labels, colors=pie_colors, autopct='%1.1f%%', startangle=90)
@@ -972,7 +973,7 @@ def fomo_visualisation():
     bar_heights = [low_fomo_count,  high_fomo_count]
     
     fig_bar, ax_bar = plt.subplots()
-    ax_bar.bar(categories, bar_heights, color=['green',  'red'])
+    ax_bar.bar(categories, bar_heights, color=['#99a4ae', '#5b6b7b'])
     ax_bar.set_title('FOMO Distribution')
     ax_bar.set_xlabel('FOMO Levels')
     ax_bar.set_ylabel('Number of Students')
@@ -1020,7 +1021,7 @@ def adhd_visualisation():
     # Pie Chart
     pie_labels = ['Low Impulsivity/Restlessness', 'High Impulsivity/Restlessness']
     pie_sizes = [low_ADHD_count, high_ADHD_count]
-    pie_colors = ['green', 'red']
+    pie_colors = ['#99a4ae', '#5b6b7b']
 
     fig_pie, ax_pie = plt.subplots()
     ax_pie.pie(pie_sizes, labels=pie_labels, colors=pie_colors, autopct='%1.1f%%', startangle=90)
@@ -1036,7 +1037,7 @@ def adhd_visualisation():
     bar_heights = [low_ADHD_count, high_ADHD_count]
     
     fig_bar, ax_bar = plt.subplots()
-    ax_bar.bar(categories, bar_heights, color=['green',  'red'])
+    ax_bar.bar(categories, bar_heights, color=['#99a4ae', '#5b6b7b'])
     ax_bar.set_title('ADHD Distribution')
     ax_bar.set_xlabel('ADHD Levels')
     ax_bar.set_ylabel('Number of Students')
@@ -1080,7 +1081,7 @@ def depression_visualisation():
     # Pie Chart
     pie_labels = ['Not Depressed', 'Depressed']
     pie_sizes = [low_depression_count, high_depression_count]
-    pie_colors = ['green', 'red']
+    pie_colors =['#99a4ae', '#5b6b7b']
 
     fig_pie, ax_pie = plt.subplots()
     ax_pie.pie(pie_sizes, labels=pie_labels, colors=pie_colors, autopct='%1.1f%%', startangle=90)
@@ -1096,7 +1097,7 @@ def depression_visualisation():
     bar_heights = [low_depression_count, high_depression_count]
     
     fig_bar, ax_bar = plt.subplots()
-    ax_bar.bar(categories, bar_heights, color=['green',  'red'])
+    ax_bar.bar(categories, bar_heights, color=['#99a4ae', '#5b6b7b'])
     ax_bar.set_title('Depression Distribution')
     ax_bar.set_xlabel('Depression Levels')
     ax_bar.set_ylabel('Number of Students')
@@ -1141,7 +1142,7 @@ def anxiety_visualisation():
     # Pie Chart
     pie_labels = ['Not Anxiety', 'Anxiety']
     pie_sizes = [low_anxiety_count, high_anxiety_count]
-    pie_colors = ['green', 'red']
+    pie_colors = ['#99a4ae', '#5b6b7b']
 
     fig_pie, ax_pie = plt.subplots()
     ax_pie.pie(pie_sizes, labels=pie_labels, colors=pie_colors, autopct='%1.1f%%', startangle=90)
@@ -1157,7 +1158,7 @@ def anxiety_visualisation():
     bar_heights = [low_anxiety_count, high_anxiety_count]
     
     fig_bar, ax_bar = plt.subplots()
-    ax_bar.bar(categories, bar_heights, color=['green',  'red'])
+    ax_bar.bar(categories, bar_heights, color=['#99a4ae', '#5b6b7b'])
     ax_bar.set_title('anxiety Distribution')
     ax_bar.set_xlabel('anxiety Levels')
     ax_bar.set_ylabel('Number of Students')
@@ -1203,7 +1204,7 @@ def stress_visualisation():
     # Pie Chart
     pie_labels = ['Not stressed', 'Stressed']
     pie_sizes = [low_stress_count, high_stress_count]
-    pie_colors = ['green', 'red']
+    pie_colors = ['#99a4ae', '#5b6b7b']
 
     fig_pie, ax_pie = plt.subplots()
     ax_pie.pie(pie_sizes, labels=pie_labels, colors=pie_colors, autopct='%1.1f%%', startangle=90)
@@ -1219,7 +1220,7 @@ def stress_visualisation():
     bar_heights = [low_stress_count, high_stress_count]
     
     fig_bar, ax_bar = plt.subplots()
-    ax_bar.bar(categories, bar_heights, color=['green',  'red'])
+    ax_bar.bar(categories, bar_heights, color=['#99a4ae', '#5b6b7b'])
     ax_bar.set_title('Stress Distribution')
     ax_bar.set_xlabel('Stress Levels')
     ax_bar.set_ylabel('Number of Students')
