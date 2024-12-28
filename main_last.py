@@ -831,10 +831,14 @@ def submit_depression():
         return render_template('home.html', alert_message=alert_message)
 
 
-
 @app.route('/currency')
 def adhd():
+    # Check if the student is logged in
+    if 'student_id' not in session:
+        return redirect(url_for('login'))  # Redirect to login page if no session found
     return render_template('adhd.html')
+
+# Route to handle form submission for ADHD questionnaire
 @app.route('/submit_adhd', methods=['POST'])  # This route will handle the form submission
 def submit_adhd():
     # Load the ADHD model and label encoder
@@ -869,14 +873,13 @@ def submit_adhd():
     y_pred_encoded = model.predict(df_input)
     y_pred = label_encoder.inverse_transform(y_pred_encoded)
 
-    # Final result: Student information, answers, and predicted category
-    result = f"{y_pred[0]}"
+    # Final result: Predicted ADHD Category
+    result = f" {y_pred[0]}"
 
-    # Store the result in the database for the logged-in student
+    # Store the result in the database if the student is logged in
     if 'student_id' in session:
         student_id = session['student_id']
 
-        # Update the ADHD column in the database for the logged-in student
         cursor = mysql.connection.cursor()
 
         try:
@@ -908,28 +911,27 @@ def submit_adhd():
         with open("adhd_results.txt", "a") as file:
             file.write(result + "\n")
 
-        # Redirect to home page with the result
-        return render_template('home.html', result=result)
+        # Redirect to home page or another form
+        return redirect(url_for('home1'))  # Ensure the session is still valid and return to home
+
     else:
         # If no student session is found
         return "No active session found. Please log in.", 403
-
-
+    
 @app.route('/logout')
 def logout():
     # Remove the user from the session to log out
     session.pop('user', None)
     return redirect(url_for('home'))
-
-@app.route('/visualisation')
-def visualisation():
-    return render_template('visualisation.html')
-
 from flask import render_template, request, redirect, url_for, flash
 import matplotlib.pyplot as plt
 import seaborn as sns
 import io
 import base64
+
+@app.route('/visualisation')
+def visualisation():
+    return render_template('visualisation.html')
 
 # Route for FOMO visualization
 @app.route('/fomo_visualisation', methods=['GET'])
