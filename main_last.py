@@ -1035,14 +1035,15 @@ def adhd_visualisation():
     pie_plot_url = base64.b64encode(pie_img.getvalue()).decode('utf8')
 
     # Bar Plot (FOMO distribution across groups)
+    # Horizontal Bar Plot (ADHD distribution across groups)
     categories = ['Low Impulsivity/Restlessness', 'High Impulsivity/Restlessness']
     bar_heights = [low_ADHD_count, high_ADHD_count]
-    
+
     fig_bar, ax_bar = plt.subplots()
-    ax_bar.bar(categories, bar_heights, color=['#99a4ae', '#5b6b7b'])
+    ax_bar.barh(categories, bar_heights, color=['#99a4ae', '#5b6b7b'])
     ax_bar.set_title('ADHD Distribution')
-    ax_bar.set_xlabel('ADHD Levels')
-    ax_bar.set_ylabel('Number of Students')
+    ax_bar.set_xlabel('Number of Students')
+    ax_bar.set_ylabel('ADHD Levels')
 
     bar_img = io.BytesIO()
     fig_bar.savefig(bar_img, format='png')
