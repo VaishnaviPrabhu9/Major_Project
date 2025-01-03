@@ -71,6 +71,10 @@
         .nav-menu a:hover {
             color: #f4f8fb;
         }
+        .dropdown:hover .dropdown-content {
+            display: flex;
+            flex-direction: column;
+        }
 
         .dropdown-content {
             display: none;
@@ -312,24 +316,26 @@
     }
 }
     .flash-messages {
-    margin: 20px 0;
-    padding: 10px;
-    border-radius: 8px;
-    background-color: #f8d7da;
-    color: #721c24;
+        transition: opacity 1s ease-out;
+        border-radius: 12px;
+
     }
+
 
     .flash-messages .alert {
         padding: 10px;
         background-color: #f8d7da;
         border: 1px solid #f5c6cb;
         color: #721c24;
+        border-radius: 12px;
+        margin-bottom: 10px;
     }
 
     .flash-messages .alert-success {
         background-color: #d4edda;
         border: 1px solid #c3e6cb;
         color: #155724;
+        border-radius: 12px;
     }
 
     </style>
@@ -342,7 +348,8 @@
             <div class="logo">
                 <img src="{{ url_for('static', filename='Logo.png') }}" alt="Logo">
             </div>
-            <button class="menu-button" onclick="toggleMenu()">☰</button>
+            <button class="menu-button" onclick="toggleMenu()" aria-label="Toggle navigation menu">☰</button>
+
             <ul class="nav-menu">
                 <li><a href="/home">Home</a></li>
                 <li><a href="/about">About Us</a></li>
@@ -383,16 +390,32 @@
         {% endwith %}
         <form action="/register_parent" method="POST">
             <div class="form-group">
-                <label for="parent_name">Parent Name</label>
-                <input type="text" id="parent_name" name="parent_name"  placeholder=""  required>
+            <label for="parent_name">Parent Name</label>
+            <input 
+                type="text" 
+                id="parent_name" 
+                name="parent_name" 
+                placeholder="" 
+                required 
+                oninput="validateName(this)"
+                title="Name should only contain letters.">
             </div>
+            
             <div class="form-group">
                 <label for="student_id">Student ID:</label>
                 <input type="text" id="student_id" name="student_id" placeholder=""  required>
             </div>    
             <div class="form-group">
                 <label for="contact_number">Contact Number</label>
-                <input type="tel" id="contact_number" name="contact_number"  placeholder=""  required>
+                <input 
+                    type="tel" 
+                    id="contact_number" 
+                    name="contact_number" 
+                    placeholder="" 
+                    required 
+                    oninput="validateContactNumber(this)"
+                    maxlength="10"
+                >
             </div>
             <div class="form-group">
                <label for="email">Email:</label>
@@ -421,18 +444,44 @@
         }
 
     
-    setTimeout(function() {
-            const flashMessages = document.querySelector('.flash-messages');
-            if (flashMessages) {
-                flashMessages.style.display = 'none';
-            }
-        }, 5000);
+    setTimeout(() => {
+    const flashMessages = document.querySelector('.flash-messages');
+    if (flashMessages) {
+        flashMessages.style.opacity = '0';
+        setTimeout(() => flashMessages.style.display = 'none', 1000); // Wait for fade-out
+    }
+    }, 5000);
+
         document.addEventListener("DOMContentLoaded", function() {
             const flashMessages = document.querySelector('.flash-messages');
             if (flashMessages) {
                 flashMessages.style.display = 'block';
             }
         });
+
+        document.querySelector("form").addEventListener("submit", function (event) {
+        const parentName = document.getElementById("parent_name").value.trim();
+        const contactNumber = document.getElementById("contact_number").value.trim();
+
+        // Validate Parent Name (letters only)
+        if (!/^[A-Za-z\s]+$/.test(parentName)) {
+            alert("Parent Name should only contain letters.");
+            event.preventDefault();
+            return;
+        }
+        });
+        function validateName(input) {
+        // Remove all non-letter characters
+        const cleanInput = input.value.replace(/[^a-zA-Z]/g, '');
+        input.value = cleanInput;
+        }
+        // Validate Contact Number (numbers only)
+        function validateContactNumber(input) {
+        // Remove all non-digit characters
+        input.value = input.value.replace(/\D/g, '').slice(0, 10);
+
+        }
+        
     </script>
 </body>
 

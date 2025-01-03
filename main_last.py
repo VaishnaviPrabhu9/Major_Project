@@ -3,6 +3,7 @@ import joblib
 import numpy as np
 from flask_mysqldb import MySQL
 from MySQLdb.cursors import DictCursor
+import MySQLdb
 import os
 import pandas as pd
 from werkzeug.security import generate_password_hash
@@ -197,7 +198,7 @@ def contactpage():
 
 # Initialize MySQL
 mysql = MySQL(app)
-@app.route('/register', methods=['POST'])
+@app.route('/register', methods=['POST','GET'])
 def register():
     if request.method == 'POST':
         student_name = request.form['student-name']
@@ -213,19 +214,29 @@ def register():
         # Check if passwords match
         if password != confirm_password:
             flash('Passwords do not match', 'error')
-            return redirect('/')
+            return redirect('/register')
 
         # Database operation
-        cur = mysql.connection.cursor()  # Corrected usage
-        cur.execute('''
-            INSERT INTO student (student_name, student_id, class, section, age, weight_kg, contact_number, password, confirm_password)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-        ''', (student_name, student_id, class_name, section, age, weight, contact, password, confirm_password))
-        mysql.connection.commit()
-        cur.close()
+        try:
+            cur = mysql.connection.cursor()
+            cur.execute('''
+                INSERT INTO student (student_name, student_id, class, section, age, weight_kg, contact_number, password, confirm_password)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            ''', (student_name, student_id, class_name, section, age, weight, contact, password, confirm_password))
+            mysql.connection.commit()
+            cur.close()
 
-        flash('Student registered successfully!', 'success')
-        return redirect('/login')
+            flash('Student registered successfully!', 'success')
+            return redirect('/login')
+
+        except MySQLdb.IntegrityError as e:
+            if e.args[0] == 1062:  # Error code for duplicate entry
+                flash(f"Student ID '{student_id}' is already registered. Please use a different ID.", 'error')
+            else:
+                flash('An error occurred while registering the student. Please try again.', 'error')
+            return redirect('/register')
+
+    return render_template('student_register.html')
     
 @app.route('/register_parent', methods=['GET', 'POST'])
 def register_parent():
@@ -452,8 +463,8 @@ def login():
             session['student_id'] = result['student_id']
             return redirect(url_for('home1'))
         else:
-            error = "Invalid username or password. Please try again."
-            return render_template('login.html', error=error)
+            flash("Invalid username or password. Please try again.", "danger")
+            return redirect(url_for('login'))  # Redirect to login page after flash message
 
     return render_template('login.html')
 
