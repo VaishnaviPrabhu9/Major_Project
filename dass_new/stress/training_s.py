@@ -5,7 +5,7 @@ from sklearn.ensemble import RandomForestClassifier
 import joblib
 
 # Load your CSV file (replace 'your_data.csv' with the actual file path)
-df = pd.read_csv('D:/project_10/dass_new/stress/stress_dataset.csv')
+df = pd.read_csv('C:\Users\VAISHNAVI\OneDrive\Desktop\Projects\Major_Project\dass_new\stress\stress_dataset.csv')
 
 # Display the first few rows of the dataset to confirm it's loaded
 print(df.head())

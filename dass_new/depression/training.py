@@ -5,7 +5,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 
 # Load the dataset
-df = pd.read_csv('D:/project_10/dass_new/depression/depression_dataset.csv')
+df = pd.read_csv('C:\Users\VAISHNAVI\OneDrive\Desktop\Projects\Major_Project\dass_new\depression\depression_dataset.csv')
 
 # Create LabelEncoder for responses and target
 response_encoder = LabelEncoder()

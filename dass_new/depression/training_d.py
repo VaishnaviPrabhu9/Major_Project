@@ -4,8 +4,9 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
 import joblib
 
+file_path=r'C:\Users\VAISHNAVI\OneDrive\Desktop\Projects\Major_Project\dass_new\depression\depression_dataset.csv'
 # Load the dataset from a CSV file
-df = pd.read_csv('D:/project_10/dass_new/depression/depression_dataset.csv')
+df = pd.read_csv(file_path)
  # Update this with the path to your CSV file
 
 # Print the first few rows to understand the data

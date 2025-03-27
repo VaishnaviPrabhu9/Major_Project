@@ -6,7 +6,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import accuracy_score
 
 # Step 1: Load the dataset (replace with your actual CSV file path)
-df = pd.read_csv('D:/project_10/dass_new/anxiety/anxiety_dataset.csv')
+df = pd.read_csv('C:\Users\VAISHNAVI\OneDrive\Desktop\Projects\Major_Project\dass_new\anxiety\anxiety_dataset.csv')
 
 # Preview the data
 print("Dataset Preview:")
